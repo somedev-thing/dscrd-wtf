@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Outfit, Lexend, JetBrains_Mono } from "next/font/google";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -41,9 +39,7 @@ export default function RootLayout({
         className={`${outfit.variable} ${lexend.variable} ${jetbrainsMono.variable} antialiased bg-void text-gray-200 font-body selection:bg-electric selection:text-white`}
       >
         <div className="noise-bg fixed inset-0 z-50 opacity-[0.04] pointer-events-none mix-blend-overlay"></div>
-        <Navbar />
         {children}
-        <Footer />
       </body>
     </html>
   );
