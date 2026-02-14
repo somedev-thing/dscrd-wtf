@@ -2,7 +2,6 @@ import { auth } from "@/auth"
 import { redirect } from "next/navigation"
 import { supabase } from "@/lib/supabase"
 import { createServer } from "@/lib/actions"
-import { Plus, Server, ArrowRight } from "lucide-react"
 import Link from "next/link"
 
 export default async function ServersPage() {
@@ -23,7 +22,7 @@ export default async function ServersPage() {
         {/* Create Server Form */}
         <div className="bg-[#0a0a0a] border border-[#222] p-6 rounded-2xl mb-8">
             <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                <Plus size={18} className="text-electric" /> Create New Server Page
+                <i className="lni lni-plus text-electric"></i> Create New Server Page
             </h2>
             <form action={createServer} className="flex flex-col md:flex-row gap-4">
                 <input 
@@ -72,7 +71,7 @@ export default async function ServersPage() {
                         <h3 className="text-xl font-bold text-white mb-1 group-hover:text-electric transition-colors">{server.name}</h3>
                         <p className="text-sm text-gray-500 font-mono mb-4">dscrd.wtf/{server.slug}</p>
                         <div className="flex items-center text-sm font-bold text-white group-hover:translate-x-1 transition-transform">
-                            Manage Server <ArrowRight size={16} className="ml-2" />
+                            Manage Server <i className="lni lni-arrow-right ml-2"></i>
                         </div>
                     </Link>
                 ))

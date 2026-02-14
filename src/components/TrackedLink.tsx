@@ -1,7 +1,7 @@
 'use client'
 
 import { trackClick } from "@/lib/actions"
-import { ExternalLink } from "lucide-react"
+
 
 interface TrackedLinkProps {
     link: {
@@ -40,7 +40,7 @@ export default function TrackedLink({ link, theme }: TrackedLinkProps) {
         
         <div className="flex items-center gap-3 relative z-10 w-full">
             <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/5 shrink-0">
-                <ExternalLink size={16} />
+                <i className="lni lni-link-2"></i>
             </div>
             <span className="font-medium truncate">{link.title}</span>
         </div>

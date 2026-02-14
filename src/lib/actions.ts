@@ -99,6 +99,11 @@ export async function trackClick(linkId: string) {
     
     // Using simple increment for now since RPC might not be set up
     const { data: link } = await supabase.from('links').select('clicks').eq('id', linkId).single()
+    if (link) {
+        await supabase.from('links').update({ clicks: link.clicks + 1 }).eq('id', linkId)
+    }
+}
+
 // --- SERVER MANAGEMENT ---
 
 export async function createServer(formData: FormData) {
@@ -108,11 +113,11 @@ export async function createServer(formData: FormData) {
   const name = formData.get('name') as string
   const slug = formData.get('slug') as string
   
-  if (!name || !slug) return { error: 'Missing fields' }
+  if (!name || !slug) return
 
   // Check slug availability (should also check reserved usernames)
   const { data: existing } = await supabase.from('servers').select('id').eq('slug', slug).single()
-  if (existing) return { error: 'Slug already taken' }
+  if (existing) redirect('/dashboard/servers?error=slug_taken')
 
   const { data: server, error } = await supabase.from('servers').insert({
       owner_id: session.user.id,
@@ -121,7 +126,7 @@ export async function createServer(formData: FormData) {
       theme_config: { color: '#5865F2', mode: 'dark' }
   }).select().single()
 
-  if (error) return { error: error.message }
+  if (error) return
   
   redirect(`/dashboard/servers/${server.id}`)
 }
@@ -132,7 +137,7 @@ export async function updateServer(serverId: string, formData: FormData) {
   
     // Validate owner
     const { data: server } = await supabase.from('servers').select('id').eq('id', serverId).eq('owner_id', session.user.id).single()
-    if (!server) return { error: 'Unauthorized' }
+    if (!server) return
 
     const theme = {
         color: formData.get('color') as string,
@@ -147,4 +152,61 @@ export async function updateServer(serverId: string, formData: FormData) {
     revalidatePath(`/dashboard/servers/${serverId}`)
     revalidatePath(`/${server.slug}`) // Revalidate public page
 }
+
+export async function createServerPage(formData: FormData) {
+    const session = await auth()
+    if (!session?.user) return
+
+    const serverId = formData.get('serverId') as string
+    const title = formData.get('title') as string
+    const slug = formData.get('slug') as string
+    const content = formData.get('content') as string
+
+    // Validate ownership
+    const { data: server } = await supabase.from('servers').select('owner_id').eq('id', serverId).single()
+    if (!server || server.owner_id !== session.user.id) return
+
+    await supabase.from('server_pages').insert({
+        server_id: serverId,
+        title,
+        slug,
+        content,
+        position: 0 // Default to top? or bottom
+    })
+
+    revalidatePath(`/dashboard/servers/${serverId}/pages`)
+}
+
+export async function deleteServerPage(formData: FormData) {
+    const session = await auth()
+    if (!session?.user) return
+
+    const pageId = formData.get('id') as string
+    const serverId = formData.get('serverId') as string // passed for revalidation context
+
+     // Validate ownership of page -> server -> owner
+     // Simplified check:
+    const { data: page } = await supabase.from('server_pages').select('server_id, servers(owner_id)').eq('id', pageId).single()
+    
+    // @ts-ignore
+    if (!page || page.servers.owner_id !== session.user.id) return
+
+    await supabase.from('server_pages').delete().eq('id', pageId)
+    revalidatePath(`/dashboard/servers/${serverId}/pages`)
+}
+
+export async function deleteServer(formData: FormData) {
+    const session = await auth()
+    if (!session?.user) return
+
+    const serverId = formData.get('id') as string
+    
+    // Validate ownership
+    const { data: server } = await supabase.from('servers').select('owner_id').eq('id', serverId).single()
+    if (!server || server.owner_id !== session.user.id) return
+
+    await supabase.from('servers').delete().eq('id', serverId)
+    redirect('/dashboard/servers')
+}
+
 

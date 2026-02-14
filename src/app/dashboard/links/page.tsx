@@ -1,7 +1,7 @@
 import { ensureProfile } from "@/lib/actions"
 import { getLinksByUserId } from "@/lib/data"
 import { addLink, deleteLink } from "@/lib/actions"
-import { Link2, Trash2, Plus } from "lucide-react"
+
 
 // Server Action wrapper for delete (needs bind but simple form for now)
 async function handleDelete(formData: FormData) {
@@ -24,7 +24,7 @@ export default async function LinksPage() {
         {/* Add Link Form */}
         <div className="bg-[#0a0a0a] border border-[#222] p-6 rounded-2xl mb-8">
             <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                <Plus size={18} className="text-electric" /> Add New Connection
+                <i className="lni lni-plus text-electric"></i> Add New Connection
             </h2>
             <form action={addLink} className="flex flex-col md:flex-row gap-4">
                 <input 
@@ -57,7 +57,7 @@ export default async function LinksPage() {
                     <div key={link.id} className="bg-[#0a0a0a] border border-[#222] p-4 rounded-xl flex items-center justify-between group hover:border-[#333] transition-colors">
                         <div className="flex items-center gap-4">
                             <div className="w-10 h-10 rounded-lg bg-[#111] flex items-center justify-center text-gray-400">
-                                <Link2 size={20} />
+                                <i className="lni lni-link-2 text-xl"></i>
                             </div>
                             <div>
                                 <div className="font-bold text-white">{link.title}</div>
@@ -72,7 +72,7 @@ export default async function LinksPage() {
                             <form action={handleDelete}>
                                 <input type="hidden" name="id" value={link.id} />
                                 <button type="submit" className="p-2 text-gray-500 hover:text-red-500 transition-colors">
-                                    <Trash2 size={18} />
+                                    <i className="lni lni-trash-3 text-lg"></i>
                                 </button>
                             </form>
                         </div>

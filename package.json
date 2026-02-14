@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@auth/supabase-adapter": "^1.11.1",
+    "@lineiconshq/free-icons": "^1.0.4",
+    "@lineiconshq/react-lineicons": "^1.0.5",
     "@radix-ui/react-avatar": "^1.1.11",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-dropdown-menu": "^2.1.16",
