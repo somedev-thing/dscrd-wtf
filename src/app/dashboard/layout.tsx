@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { auth } from "@/auth"
 import { redirect } from "next/navigation"
-import { LayoutGrid, Link as LinkIcon, BarChart3, PaintBucket, Settings, ChevronRight } from 'lucide-react'
+
 import DashboardSidebar from "@/components/DashboardSidebar"
 
 export default async function DashboardLayout({

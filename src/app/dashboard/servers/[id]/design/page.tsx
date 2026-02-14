@@ -1,6 +1,5 @@
 import { supabase } from "@/lib/supabase"
 import { updateServer } from "@/lib/actions"
-import { PaintBucket, Moon, Sun } from "lucide-react"
 
 export default async function ServerDesignPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -37,7 +36,7 @@ export default async function ServerDesignPage({ params }: { params: Promise<{ i
 
             <div className="flex justify-end">
                 <button type="submit" className="bg-white text-black hover:bg-electric hover:text-white px-8 py-3 rounded-xl font-bold transition-all flex items-center gap-2">
-                    <PaintBucket size={18} /> Save Design
+                    <i className="lni lni-color-palette"></i> Save Design
                 </button>
             </div>
         </form>

@@ -2,7 +2,7 @@
 
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { AlertTriangle } from 'lucide-react'
+
 import { Suspense } from 'react'
 
 function ErrorContent() {
@@ -14,7 +14,7 @@ function ErrorContent() {
       <div className="absolute inset-0 bg-red-500/5 ptr-events-none"></div>
       
       <div className="w-16 h-16 bg-red-900/20 rounded-full flex items-center justify-center mx-auto mb-6 text-red-500">
-        <AlertTriangle size={32} />
+        <i className="lni lni-warning text-3xl"></i>
       </div>
 
       <h1 className="text-2xl font-bold text-white mb-2 font-sans">Authentication Error</h1>

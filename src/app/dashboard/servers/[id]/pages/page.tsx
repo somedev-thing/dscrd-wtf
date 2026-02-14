@@ -1,6 +1,5 @@
 import { supabase } from "@/lib/supabase"
 import { createServerPage, deleteServerPage } from "@/lib/actions"
-import { Plus, Trash2, FileText, ArrowRight } from "lucide-react"
 
 export default async function ServerPagesPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -15,7 +14,7 @@ export default async function ServerPagesPage({ params }: { params: Promise<{ id
         {/* Create Page Form */}
         <div className="bg-[#0a0a0a] border border-[#222] p-6 rounded-2xl mb-8">
             <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                <Plus size={18} className="text-electric" /> Create New Page
+                <i className="lni lni-plus text-electric"></i> Create New Page
             </h2>
             <form action={createServerPage} className="flex flex-col gap-4">
                 <input type="hidden" name="serverId" value={id} />
@@ -39,7 +38,7 @@ export default async function ServerPagesPage({ params }: { params: Promise<{ id
                 pages.map((page: any) => (
                     <div key={page.id} className="bg-[#0a0a0a] border border-[#222] p-4 rounded-xl flex items-center justify-between group">
                         <div className="flex items-center gap-4">
-                            <FileText size={20} className="text-gray-500" />
+                            <i className="lni lni-notepad text-xl text-gray-500"></i>
                             <div>
                                 <div className="font-bold text-white">{page.title}</div>
                                 <div className="text-xs text-gray-500 font-mono">/{page.slug}</div>
@@ -48,7 +47,7 @@ export default async function ServerPagesPage({ params }: { params: Promise<{ id
                         <form action={deleteServerPage}>
                              <input type="hidden" name="id" value={page.id} />
                              <input type="hidden" name="serverId" value={id} />
-                             <button type="submit" className="text-gray-500 hover:text-red-500 p-2"><Trash2 size={18} /></button>
+                             <button type="submit" className="text-gray-500 hover:text-red-500 p-2"><i className="lni lni-trash-3 text-lg"></i></button>
                         </form>
                     </div>
                 ))

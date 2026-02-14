@@ -1,6 +1,6 @@
 import { auth } from "@/auth"
 import { redirect } from "next/navigation"
-import { Plus, ArrowRight, BarChart3, Users, ExternalLink, RefreshCw, Filter, Edit, Play } from 'lucide-react'
+
 import Image from 'next/image'
 import { ensureProfile } from "@/lib/actions"
 import { getLinksByUserId } from "@/lib/data"
@@ -57,7 +57,7 @@ export default async function DashboardPage() {
                 <div className="h-8 w-px bg-[#222]"></div>
 
                 <Link href="/dashboard/links" className="bg-white text-black hover:bg-electric hover:text-white px-5 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 font-sans">
-                    Create Link <ArrowRight size={16} />
+                    Create Link <i className="lni lni-arrow-right"></i>
                 </Link>
             </div>
         </header>
@@ -71,7 +71,7 @@ export default async function DashboardPage() {
                 {/* Main Stat */}
                 <div className="bg-[#0a0a0a] border border-[#222] hover:border-[#333] transition-colors p-6 rounded-2xl flex flex-col justify-between h-40 relative overflow-hidden group">
                     <div className="absolute right-0 top-0 p-6 text-electric opacity-10 group-hover:scale-110 transition-transform">
-                        <BarChart3 size={64} />
+                        <i className="lni lni-bar-chart-2 text-6xl"></i>
                     </div>
                     <div className="text-gray-400 text-sm font-mono font-medium">TOTAL CLICKS</div>
                     <div>
@@ -117,8 +117,8 @@ export default async function DashboardPage() {
                     <div className="flex items-center justify-between">
                         <h2 className="text-lg font-bold text-white font-sans">Active Connections</h2>
                         <div className="flex gap-2">
-                             <button className="p-2 text-gray-500 hover:text-white transition-colors"><Filter size={18} /></button>
-                             <button className="p-2 text-gray-500 hover:text-white transition-colors"><RefreshCw size={18} /></button>
+                             <button className="p-2 text-gray-500 hover:text-white transition-colors"><i className="lni lni-funnel"></i></button>
+                             <button className="p-2 text-gray-500 hover:text-white transition-colors"><i className="lni lni-reload"></i></button>
                         </div>
                     </div>
 
@@ -129,7 +129,7 @@ export default async function DashboardPage() {
                             <div className="w-12 h-12 rounded-lg bg-[#111] border border-[#222] flex items-center justify-center text-electric shrink-0 relative overflow-hidden">
                                 {session.user.image ? 
                                    <Image src={session.user.image} alt="Avatar" width={48} height={48} className="object-cover w-full h-full opacity-80" /> : 
-                                   <Users size={24} />
+                                   <i className="lni lni-users text-2xl"></i>
                                 }
                             </div>
                             <div className="flex-1 min-w-0">
@@ -164,8 +164,8 @@ export default async function DashboardPage() {
                                     <div className="text-[10px] text-gray-600 font-mono uppercase">Clicks</div>
                                 </div>
                                 <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <Link href="/dashboard/links" className="p-2 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white"><Edit size={16} /></Link>
-                                    <a href={link.url} target="_blank" className="p-2 rounded-lg hover:bg-white/10 text-gray-400 hover:text-electric"><ExternalLink size={16} /></a>
+                                    <Link href="/dashboard/links" className="p-2 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white"><i className="lni lni-pencil-1"></i></Link>
+                                    <a href={link.url} target="_blank" className="p-2 rounded-lg hover:bg-white/10 text-gray-400 hover:text-electric"><i className="lni lni-link-2"></i></a>
                                 </div>
                             </div>
                         ))}
@@ -215,7 +215,7 @@ export default async function DashboardPage() {
                             <div className="text-sm font-bold text-white font-sans">Profile QR</div>
                             <div className="text-xs text-gray-500 font-sans">For business cards</div>
                         </div>
-                        <button className="ml-auto p-2 hover:bg-[#111] rounded-lg text-gray-400 hover:text-white"><ArrowRight size={16} className="rotate-90" /></button>
+                        <button className="ml-auto p-2 hover:bg-[#111] rounded-lg text-gray-400 hover:text-white"><i className="lni lni-arrow-right rotate-90"></i></button>
                     </div>
                     
                     {/* User Badges Widget */}

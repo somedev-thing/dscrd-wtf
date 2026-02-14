@@ -1,4 +1,4 @@
-import { ArrowRight, UserPlus, Palette, Share2 } from 'lucide-react'
+
 import Link from 'next/link'
 
 export default function HowItWorks() {
@@ -13,7 +13,7 @@ export default function HowItWorks() {
         {/* Step 1 */}
         <div className="relative flex flex-col md:flex-row gap-8 items-start">
           <div className="hidden md:flex w-16 h-16 rounded-full bg-card border border-electric items-center justify-center z-10 shrink-0">
-             <UserPlus className="text-electric" />
+             <i className="lni lni-user-4 text-electric text-xl"></i>
           </div>
           <div className="bg-card border border-border p-8 rounded-[2rem] flex-1">
              <h2 className="text-2xl font-bold mb-4 text-white font-sans">1. Connect Discord</h2>
@@ -30,7 +30,7 @@ export default function HowItWorks() {
         {/* Step 2 */}
         <div className="relative flex flex-col md:flex-row gap-8 items-start">
           <div className="hidden md:flex w-16 h-16 rounded-full bg-card border border-electric items-center justify-center z-10 shrink-0">
-             <Palette className="text-electric" />
+             <i className="lni lni-color-palette text-electric text-xl"></i>
           </div>
           <div className="bg-card border border-border p-8 rounded-[2rem] flex-1">
              <h2 className="text-2xl font-bold mb-4 text-white font-sans">2. Customize Card</h2>
@@ -44,7 +44,7 @@ export default function HowItWorks() {
         {/* Step 3 */}
         <div className="relative flex flex-col md:flex-row gap-8 items-start">
            <div className="hidden md:flex w-16 h-16 rounded-full bg-card border border-electric items-center justify-center z-10 shrink-0">
-             <Share2 className="text-electric" />
+             <i className="lni lni-share text-electric text-xl"></i>
           </div>
           <div className="bg-card border border-border p-8 rounded-[2rem] flex-1">
              <h2 className="text-2xl font-bold mb-4 text-white font-sans">3. Share Everywhere</h2>
@@ -53,7 +53,7 @@ export default function HowItWorks() {
                Paste it in Discord chat, and it renders a beautiful dynamic embed.
              </p>
              <Link href="/" className="inline-flex items-center gap-2 text-electric hover:text-white transition-colors font-bold">
-               Get Started <ArrowRight size={16} />
+               Get Started <i className="lni lni-arrow-right"></i>
              </Link>
           </div>
         </div>

@@ -1,5 +1,5 @@
 "use client"
-import { ArrowRight } from 'lucide-react'
+
 import { useState } from 'react'
 
 export default function Hero() {
@@ -39,7 +39,7 @@ export default function Hero() {
             className="bg-transparent border-none outline-none text-white font-mono placeholder-gray-700 w-full ml-1 focus:ring-0"
           />
           <button className="bg-electric text-white p-3 rounded-full hover:bg-white hover:text-black transition-colors shadow-lg shadow-electric/20">
-            <ArrowRight size={20} />
+            <i className="lni lni-arrow-right text-xl"></i>
           </button>
         </div>
       </div>

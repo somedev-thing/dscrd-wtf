@@ -136,7 +136,7 @@ export async function updateServer(serverId: string, formData: FormData) {
     if (!session?.user) return
   
     // Validate owner
-    const { data: server } = await supabase.from('servers').select('id').eq('id', serverId).eq('owner_id', session.user.id).single()
+    const { data: server } = await supabase.from('servers').select('id, slug').eq('id', serverId).eq('owner_id', session.user.id).single()
     if (!server) return
 
     const theme = {

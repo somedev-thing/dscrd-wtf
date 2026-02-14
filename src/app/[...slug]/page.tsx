@@ -1,7 +1,7 @@
 import { getProfileByUsername, getLinksByUserId, getServerBySlug, getServerPage, getServerPages } from "@/lib/data"
 import { notFound } from "next/navigation"
 import Image from "next/image"
-import { ExternalLink, Hash, FileText } from "lucide-react"
+
 import TrackedLink from "@/components/TrackedLink"
 import Link from "next/link"
 
@@ -211,7 +211,7 @@ export default async function DynamicPage({ params }: { params: Promise<{ slug: 
                                 // In real app, use specific markdown parser
                             ) : (
                                 <div className="text-center py-20 opacity-50">
-                                    <FileText size={48} className="mx-auto mb-4 opacity-50" />
+                                    <i className="lni lni-notepad text-5xl mx-auto mb-4 opacity-50"></i>
                                     <p>Welcome to {server.name}.</p>
                                     <p className="text-sm">This page shows the server status and information.</p>
                                 </div>
