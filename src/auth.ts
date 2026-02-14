@@ -4,25 +4,30 @@ import { SupabaseAdapter } from "@auth/supabase-adapter"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost: true,
-  providers: [Discord],
+  providers: [
+    Discord({
+      clientId: process.env.DISCORD_CLIENT_ID,
+      clientSecret: process.env.DISCORD_CLIENT_SECRET,
+    })
+  ],
   adapter: SupabaseAdapter({
     url: process.env.SUPABASE_URL!,
     secret: process.env.SUPABASE_SERVICE_ROLE_KEY!,
   }),
+  session: { strategy: "jwt" },
   callbacks: {
-    async session({ session, user, token }) {
-      if (session.user) {
-        session.user.id = user.id
-        // @ts-ignore - we need to type this properly later, but for now we pass it through
-        session.user.flags = token?.flags || user?.flags
+    async session({ session, token }) {
+      if (session.user && token) {
+        session.user.id = token.sub!
         // @ts-ignore
-        session.user.username = token?.username || user?.username
+        session.user.flags = token.flags
+        // @ts-ignore
+        session.user.username = token.username
       }
       return session
     },
     async jwt({ token, profile }) {
       if (profile) {
-        token.id = profile.id
         token.flags = profile.flags
         token.username = profile.username
         token.premium_type = profile.premium_type
