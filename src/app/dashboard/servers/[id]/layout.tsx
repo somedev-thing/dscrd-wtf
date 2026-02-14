@@ -1,6 +1,7 @@
 import { auth } from "@/auth"
 import { redirect, notFound } from "next/navigation"
-import { supabase } from "@/lib/supabase"
+import dbConnect from "@/lib/db"
+import Server from "@/lib/models/Server"
 import Link from "next/link"
 import { ArrowLeft, SquaresFour, Notebook, Palette, Gear } from "@phosphor-icons/react/dist/ssr"
 
@@ -10,13 +11,8 @@ export default async function ServerLayout({ children, params }: { children: Rea
   
   const { id } = await params
 
-  // Verify ownership
-  const { data: server } = await supabase
-    .from('servers')
-    .select('*')
-    .eq('id', id)
-    .eq('owner_id', session.user.id)
-    .single()
+  await dbConnect()
+  const server = await Server.findOne({ _id: id, ownerId: session.user.id }).lean() as any
 
   if (!server) notFound()
 

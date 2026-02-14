@@ -1,6 +1,6 @@
 import { auth } from "@/auth"
 import { redirect } from "next/navigation"
-import DashboardSidebar from "@/components/DashboardSidebar"
+import { Sidebar } from "@/components/dashboard/Sidebar"
 
 export default async function DashboardLayout({
   children,
@@ -14,15 +14,18 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="flex min-h-screen font-sans">
-        {/* Background handled by globals.css body */}
-
+    <div className="flex min-h-screen font-sans bg-[#050508] text-white">
         {/* SIDEBAR */}
-        <DashboardSidebar user={session.user} />
+        <Sidebar user={session.user} />
 
-        {/* MAIN CONTENT AREA */}
-        <main className="flex-1 flex flex-col relative z-10 w-full lg:w-0 overflow-hidden">
-            {children}
+         {/* MAIN CONTENT AREA */}
+        <main className="flex-1 flex flex-col relative z-10 w-full lg:w-0 overflow-hidden bg-dot-pattern">
+            {/* Top Navbar Placeholder (if needed, otherwise just padding) */}
+            <div className="flex-1 overflow-y-auto p-4 pt-16 lg:p-8">
+                 <div className="max-w-7xl mx-auto w-full">
+                    {children}
+                 </div>
+            </div>
         </main>
     </div>
   )

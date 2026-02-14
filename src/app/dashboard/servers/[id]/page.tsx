@@ -1,10 +1,6 @@
-import { supabase } from "@/lib/supabase"
-
 export default async function ServerOverviewPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
 
-  // Might fetch analytics here later
-  
   return (
     <div className="p-6 lg:p-10">
         <h2 className="text-xl font-bold text-white mb-6">Overview</h2>

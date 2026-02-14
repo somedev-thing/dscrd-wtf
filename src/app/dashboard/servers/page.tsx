@@ -1,6 +1,7 @@
 import { auth } from "@/auth"
 import { redirect } from "next/navigation"
-import { supabase } from "@/lib/supabase"
+import dbConnect from "@/lib/db"
+import Server from "@/lib/models/Server"
 import { createServer } from "@/lib/actions"
 import Link from "next/link"
 import Image from "next/image"
@@ -40,19 +41,14 @@ export default async function ServersPage() {
   // @ts-ignore – accessToken is stored in JWT
   const accessToken = session.user.accessToken as string | undefined
 
-  // Fetch Discord guilds where user is admin/owner
   const allGuilds = accessToken ? await getDiscordGuilds(accessToken) : []
-  // Filter to guilds where user has MANAGE_GUILD (0x20) or is owner
   const adminGuilds = allGuilds.filter(g => g.owner || (g.permissions & 0x20) !== 0)
 
-  // Also fetch any servers already registered in our DB
-  const { data: registeredServers } = await supabase
-    .from('servers')
-    .select('*')
-    .eq('owner_id', session.user.id)
-    .order('created_at', { ascending: false })
+  await dbConnect()
+  const registeredServers = await Server.find({ ownerId: session.user.id }).sort({ createdAt: -1 }).lean()
+  const serialized = registeredServers.map((s: any) => ({ ...s, id: s._id.toString(), _id: s._id.toString() }))
   
-  const registeredIds = new Set(registeredServers?.map(s => s.discord_guild_id) || [])
+  const registeredIds = new Set(serialized.map((s: any) => s.discordGuildId) || [])
 
   return (
     <div className="p-6 lg:p-10 max-w-6xl mx-auto">
@@ -60,11 +56,11 @@ export default async function ServersPage() {
         <p className="text-gray-400 mb-8 font-mono text-sm">Manage your Discord communities and create public server pages.</p>
 
         {/* Registered Servers */}
-        {registeredServers && registeredServers.length > 0 && (
+        {serialized && serialized.length > 0 && (
           <>
             <div className="text-xs font-mono text-gray-500 uppercase tracking-widest mb-4">Registered Server Pages</div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-                {registeredServers.map((server: any) => (
+                {serialized.map((server: any) => (
                     <Link key={server.id} href={`/dashboard/servers/${server.id}`} className="glass-card p-6 rounded-3xl hover:border-electric/50 transition-all group relative overflow-hidden">
                         <div className="absolute top-0 right-0 p-8 opacity-0 group-hover:opacity-10 transition-opacity">
                             <ServerStack02Icon size={96} />

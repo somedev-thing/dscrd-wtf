@@ -1,11 +1,8 @@
-import { supabase } from "@/lib/supabase"
+import dbConnect from "@/lib/db"
+import Link from "@/lib/models/Link"
 
 export async function getLinksByUserId(userId: string) {
-  const { data: links } = await supabase
-    .from('links')
-    .select('*')
-    .eq('user_id', userId)
-    .order('position', { ascending: true })
-  
-  return links
+  await dbConnect()
+  const links = await Link.find({ userId }).sort({ position: 1 }).lean()
+  return links.map((l: any) => ({ ...l, id: l._id.toString() }))
 }

@@ -1,258 +1,183 @@
 import { auth } from "@/auth"
 import { redirect } from "next/navigation"
-import Image from 'next/image'
-import { ensureProfile } from "@/lib/actions"
-import { getLinksByUserId } from "@/lib/data"
+import dbConnect from "@/lib/db"
+import Server from "@/lib/models/Server"
+import { createServer } from "@/lib/actions"
 import Link from "next/link"
-import { 
-  ArrowRight01Icon, 
-  ChartBarLineIcon, 
-  UserGroupIcon, 
-  FilterHorizontalIcon, 
-  RefreshIcon, 
-  PencilEdit02Icon, 
-  LinkSquare01Icon,
-  InformationCircleIcon
-} from 'hugeicons-react'
+import Image from "next/image"
+import { ArrowRight01Icon, PlusSignIcon, ServerStack02Icon, Rocket01Icon, Settings02Icon, ChartBarLineIcon } from "hugeicons-react"
 
-export default async function DashboardPage() {
+interface DiscordGuild {
+  id: string
+  name: string
+  icon: string | null
+  owner: boolean
+  permissions: number
+}
+
+async function getDiscordGuilds(accessToken: string): Promise<DiscordGuild[]> {
+  try {
+    const res = await fetch("https://discord.com/api/v10/users/@me/guilds", {
+      headers: { Authorization: `Bearer ${accessToken}` },
+      next: { revalidate: 60 },
+    })
+    if (!res.ok) return []
+    return res.json()
+  } catch {
+    return []
+  }
+}
+
+function getGuildIconUrl(guild: DiscordGuild): string | null {
+  if (!guild.icon) return null
+  const ext = guild.icon.startsWith("a_") ? "gif" : "png"
+  return `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.${ext}?size=128`
+}
+
+export default async function DashboardOverview() {
   const session = await auth()
   if (!session?.user) redirect("/")
 
-  const profile = await ensureProfile()
-  const links = await getLinksByUserId(session.user.id)
+  // @ts-ignore – accessToken is stored in JWT
+  const accessToken = session.user.accessToken as string | undefined
+  const allGuilds = accessToken ? await getDiscordGuilds(accessToken) : []
+  const adminGuilds = allGuilds.filter(g => g.owner || (g.permissions & 0x20) !== 0)
 
-  // Calculate badges from profile
-  const badges = profile?.selected_badges || [];
-  // Fallback if empty (logic should ideally be handling this server-side or in profile creation)
-  // If we want to show ALL eligible badges:
-  const eligibleBadges = [];
-  const flags = session.user.flags || 0;
-  if (flags & (1 << 0)) eligibleBadges.push({ name: 'Discord Staff', icon: '/assets/discordstaff.svg' });
-  if (flags & (1 << 1)) eligibleBadges.push({ name: 'Partnered Server Owner', icon: '/assets/discordpartner.svg' });
-  if (flags & (1 << 2)) eligibleBadges.push({ name: 'HypeSquad Events', icon: '/assets/hypesquadevents.svg' });
-  if (flags & (1 << 3)) eligibleBadges.push({ name: 'Bug Hunter Level 1', icon: '/assets/discordbughunter1.svg' });
-  if (flags & (1 << 6)) eligibleBadges.push({ name: 'House Bravery', icon: '/assets/hypesquadbravery.svg' });
-  if (flags & (1 << 7)) eligibleBadges.push({ name: 'House Brilliance', icon: '/assets/hypesquadbrilliance.svg' });
-  if (flags & (1 << 8)) eligibleBadges.push({ name: 'House Balance', icon: '/assets/hypesquadbalance.svg' });
-  if (flags & (1 << 9)) eligibleBadges.push({ name: 'Early Supporter', icon: '/assets/discordearlysupporter.svg' });
-  if (flags & (1 << 14)) eligibleBadges.push({ name: 'Bug Hunter Level 2', icon: '/assets/discordbughunter2.svg' });
-  if (flags & (1 << 17)) eligibleBadges.push({ name: 'Verified Bot Developer', icon: '/assets/discordbotdev.svg' });
-  if (flags & (1 << 18)) eligibleBadges.push({ name: 'Certified Moderator', icon: '/assets/discordmod.svg' });
-  if (flags & (1 << 22)) eligibleBadges.push({ name: 'Active Developer', icon: '/assets/activedeveloper.svg' });
-  if (session.user.premium_type && session.user.premium_type > 0) eligibleBadges.push({ name: 'Nitro', icon: '/assets/discordnitro.svg' });
-
-  // If user hasn't selected badges, show all eligible
-  const displayBadges = badges.length > 0 ? badges : eligibleBadges;
-
-  // Calculate stats
-  const totalClicks = links?.reduce((acc: number, link: any) => acc + (link.clicks || 0), 0) || 0
-  const activeLinks = links?.length || 0
+  // Fetch registered servers
+  await dbConnect()
+  const registeredServers = await Server.find({ ownerId: session.user.id }).sort({ createdAt: -1 }).lean()
+  const serialized = registeredServers.map((s: any) => ({ ...s, id: s._id.toString(), _id: s._id.toString() }))
+  
+  const registeredIds = new Set(serialized.map((s: any) => s.discordGuildId) || [])
 
   return (
-     <>
+    <div className="max-w-5xl mx-auto space-y-10 animate-fade-in">
+        
         {/* Header */}
-        <header className="h-24 flex items-center justify-between px-10 sticky top-0 z-30">
-            <div>
-                <h1 className="font-heading font-black text-2xl text-white">Dashboard</h1>
-                <p className="text-sm text-gray-500 font-sans">Welcome back, {session.user.name}</p>
-            </div>
+        <div className="flex justify-between items-center">
+             <div>
+                <h1 className="text-3xl font-bold font-sans text-white mb-2">Dashboard</h1>
+                <p className="text-gray-400">Select a server to manage or create a new one.</p>
+             </div>
+             {/* Profile/Settings Quick Link (optional, cleaner without) */}
+        </div>
 
-            <div className="flex items-center gap-6">
-                <Link href="/dashboard/links" className="bg-white text-black hover:bg-electric hover:text-white px-5 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 font-sans group">
-                    Create Link <ArrowRight01Icon size={16} className="group-hover:translate-x-1 transition-transform" />
-                </Link>
-            </div>
-        </header>
-
-        {/* Dashboard Content */}
-        <div className="px-10 pb-10 overflow-y-auto">
-
-            {/* Top Grid (Bento Style) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-
-                {/* Main Stat */}
-                <div className="glass-card p-8 rounded-3xl relative overflow-hidden group">
-                    <div className="absolute right-0 top-0 p-6 text-electric opacity-10 group-hover:scale-110 transition-transform">
-                        <ChartBarLineIcon size={64} />
+        {/* Invite Banner */}
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-electric to-purple-600 p-8 md:p-10 shadow-lg shadow-electric/20 group">
+             <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+             <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div className="flex items-center gap-6">
+                    <div className="w-20 h-20 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center shadow-inner border border-white/20">
+                        <Rocket01Icon size={40} className="text-white" />
                     </div>
-                    <div className="flex flex-col h-full justify-between relative z-10">
-                        <div className="flex items-center gap-3 mb-4">
-                            <div className="p-2 rounded-xl bg-electric/10 text-electric border border-electric/20">
-                                <ChartBarLineIcon size={24} />
-                            </div>
-                            <span className="text-gray-400 font-medium">Total Clicks</span>
-                        </div>
-                        <div>
-                            <div className="text-5xl font-black text-white font-sans tracking-tight">{totalClicks}</div>
-                            <div className="flex items-center gap-2 mt-2">
-                                <span className="text-green-400 text-xs font-bold font-mono">
-                                    +12% vs last week
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Secondary Stat */}
-                <div className="glass-card p-8 rounded-3xl relative overflow-hidden group">
-                    <div className="absolute right-0 top-0 p-6 text-phantom-accent opacity-10 group-hover:scale-110 transition-transform">
-                        <LinkSquare01Icon size={64} />
-                    </div>
-                    <div className="flex flex-col h-full justify-between relative z-10">
-                        <div className="flex items-center gap-3 mb-4">
-                            <div className="p-2 rounded-xl bg-phantom-accent/10 text-phantom-accent border border-phantom-accent/20">
-                                <LinkSquare01Icon size={24} />
-                            </div>
-                            <span className="text-gray-400 font-medium">Active Links</span>
-                        </div>
-                        <div>
-                            <div className="text-5xl font-black text-white font-sans tracking-tight">{activeLinks}</div>
-                            <div className="text-xs text-gray-500 mt-2 font-sans">Unlimited Plan Active</div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Verified Upsell (Or Status) */}
-                <div className="bg-[#0a0a0a] border border-[#222] p-6 rounded-2xl md:col-span-2 bg-gradient-to-r from-electric/10 to-transparent border-electric/30 flex items-center justify-between relative overflow-hidden">
-                    <div className="relative z-10">
-                        <div className="flex items-center gap-2 mb-2">
-                            {profile?.plan === 'pro' ? (
-                                <span className="bg-electric text-white text-[10px] font-black px-2 py-0.5 rounded font-mono">PRO PLAN</span>
-                            ) : (
-                                <span className="bg-gray-700 text-white text-[10px] font-black px-2 py-0.5 rounded font-mono">FREE PLAN</span>
-                            )}
-                            <span className="text-xs text-gray-400 font-sans">
-                                {profile?.plan === 'pro' ? 'Active Subscription' : 'Upgrade to Pro'}
-                            </span>
-                        </div>
-                        <h3 className="text-2xl font-bold text-white font-sans">
-                            {profile?.plan === 'pro' ? 'Power User Active' : 'Unlock Full Potential'}
-                        </h3>
-                        <p className="text-sm text-gray-400 mt-1 max-w-sm font-sans">
-                            {profile?.plan === 'pro'
-                             ? 'You have access to Custom CSS, Themes, and Animated Banners.'
-                             : 'Get access to themes, banners, and removed branding.'}
+                    <div>
+                        <h2 className="text-2xl font-bold text-white mb-1">Invite our Bot</h2>
+                        <p className="text-white/80 max-w-md">
+                            Try our Discord bot with one-click setup. 
+                            Automate your community management today.
                         </p>
                     </div>
-                    <div className="hidden md:flex gap-3 relative z-10">
-                        <Link href="/pricing" className="px-4 py-2 bg-[#111] border border-[#222] hover:border-white text-white rounded-lg text-sm font-medium transition-colors font-sans">
-                            {profile?.plan === 'pro' ? 'Manage Billing' : 'Upgrade Now'}
-                        </Link>
-                    </div>
                 </div>
-            </div>
-
-            {/* Main Content Split */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-                {/* Left: Active Links List */}
-                <div className="lg:col-span-2 flex flex-col gap-6">
-                    <div className="flex items-center justify-between">
-                        <h2 className="text-xl font-bold text-white font-sans">Recent Connections</h2>
-                        <div className="flex gap-2">
-                             <button className="p-2 text-gray-500 hover:text-white transition-colors"><FilterHorizontalIcon size={18} /></button>
-                             <button className="p-2 text-gray-500 hover:text-white transition-colors"><UserGroupIcon size={24} /></button>
-                        </div>
-                    </div>
-
-                    <div className="flex flex-col gap-3">
-
-                        {links && links.map((link: any) => (
-                            <div key={link.id} className="glass-card p-4 rounded-2xl flex items-center justify-between group hover:border-white/20 transition-all">
-                                <div className="flex items-center gap-5">
-                                    <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center text-gray-400 shrink-0 group-hover:text-white transition-colors">
-                                        <LinkSquare01Icon size={20} />
-                                    </div>
-                                    <div className="flex-1 min-w-0">
-                                        <div className="flex items-center gap-3 mb-1">
-                                            <span className="text-white font-bold truncate text-lg">{link.title}</span>
-                                            <span className="bg-green-500/20 text-green-400 text-[10px] px-2 py-0.5 rounded-full font-bold">ACTIVE</span>
-                                        </div>
-                                        <div className="text-xs text-gray-500 truncate font-mono flex items-center gap-2">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-electric"></span>
-                                            {link.url}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="flex items-center gap-6">
-                                    <div className="text-right hidden sm:block">
-                                        <div className="text-lg font-bold text-white font-mono">{link.clicks}</div>
-                                        <div className="text-[10px] text-gray-600 font-mono uppercase tracking-wider">Clicks</div>
-                                    </div>
-                                    <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <Link href="/dashboard/links" className="p-2 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white"><PencilEdit02Icon size={18} /></Link>
-                                    <a href={link.url} target="_blank" className="p-2 rounded-lg hover:bg-white/10 text-gray-400 hover:text-electric"><LinkSquare01Icon size={18} /></a>
-                                </div>
-                                </div>
-                            </div>
-                        ))}
-
-                        {links?.length === 0 && (
-                            <div className="text-center py-12 text-gray-500 text-sm font-mono glass-card rounded-3xl flex flex-col items-center justify-center gap-4">
-                                <div className="p-4 rounded-full bg-white/5 text-gray-600">
-                                    <LinkSquare01Icon size={32} />
-                                </div>
-                                <p>No connections yet.</p>
-                                <Link href="/dashboard/links" className="text-electric hover:underline">Create your first link</Link>
-                            </div>
-                        )}
-
-                    </div>
-                </div>
-
-                {/* Right: Quick Tools */}
-                <div className="flex flex-col gap-6">
-                    <h2 className="text-xl font-bold text-white font-sans">Tools</h2>
-
-                    {/* CSS Editor Widget */}
-                    <div className="glass-card p-6 rounded-3xl">
-                        <div className="flex justify-between items-center mb-6">
-                            <span className="text-sm font-bold text-white font-sans">Custom CSS</span>
-                            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                        </div>
-                        <div className="bg-[#050505] border border-white/5 rounded-xl p-4 font-mono text-xs text-gray-400 overflow-hidden relative mb-4">
-                            <span className="text-phantom-accent">.profile-card</span> {'{'}<br/>
-                            &nbsp;&nbsp;<span className="text-electric">border</span>: <span className="text-fanta">1px solid</span> <span className="text-white">#fff</span>;<br/>
-                            {'}'}
-                        </div>
-                        <button className="w-full bg-white/5 hover:bg-white/10 border border-white/5 text-xs font-bold text-white py-3 rounded-xl transition-colors font-sans">
-                            Open Editor
-                        </button>
-                    </div>
-
-
-                    {/* User Badges Widget */}
-                    <div className="glass-card p-6 rounded-3xl">
-                        <div className="text-sm font-bold text-white font-sans mb-4">Your Badges</div>
-                        <div className="flex flex-wrap gap-2">
-                            {displayBadges.length > 0 ? (
-                                displayBadges.map((badge: any) => (
-                                    <div key={badge.name} className="w-10 h-10 p-2 bg-white/5 rounded-lg border border-white/5 hover:border-electric/50 transition-colors flex items-center justify-center tooltip" title={badge.name}>
-                                        <Image src={badge.icon} alt={badge.name} width={24} height={24} className="w-full h-full object-contain drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]" />
-                                    </div>
-                                ))
-                            ) : (
-                                <div className="w-full text-center text-gray-500 text-xs">No badges to display.</div>
-                            )}
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            {/* Mini Footer */}
-            <div className="mt-10 pt-6 border-t border-[#222] flex justify-between items-center text-xs text-gray-600 font-mono">
-                <div>&copy; 2026 dscrd.wtf</div>
-                <div className="flex gap-4">
-                    <Link href="/legal/terms" className="hover:text-gray-400">Terms</Link>
-                    <Link href="/legal/privacy" className="hover:text-gray-400">Privacy</Link>
-                    <Link href="https://twitter.com/dscrdwtf" className="hover:text-gray-400">Twitter</Link>
-                </div>
-            </div>
-
+                <Link href="/bot/invite" className="bg-white text-electric hover:bg-gray-100 px-6 py-3 rounded-xl font-bold transition-colors flex items-center gap-2 shadow-lg">
+                    <PlusSignIcon size={18} /> Invite now
+                </Link>
+             </div>
         </div>
-     </>
+
+        {/* Select Server Section */}
+        <section>
+            <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                <ServerStack02Icon size={24} className="text-gray-400" />
+                Select Server
+            </h2>
+            <p className="text-gray-500 mb-6 -mt-4 text-sm">Select the server to configure dscrd.wtf pages for.</p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {/* Custom Create Card */}
+                <div className="glass-card p-6 rounded-2xl border border-dashed border-white/10 hover:border-electric/50 transition-colors flex flex-col justify-center items-center text-center gap-4 group cursor-pointer min-h-[160px]">
+                     <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-gray-500 group-hover:text-white group-hover:bg-electric transition-all">
+                        <PlusSignIcon size={24} />
+                     </div>
+                     <div>
+                        <h3 className="font-bold text-white">Create Custom Server</h3>
+                        <p className="text-xs text-gray-500 mt-1">For manual setup without bot</p>
+                     </div>
+                </div>
+
+                {/* Render Admin Guilds */}
+                {adminGuilds.map((guild) => {
+                  const isRegistered = registeredIds.has(guild.id)
+                  const registeredServer = serialized?.find((s: any) => s.discordGuildId === guild.id)
+                  const iconUrl = getGuildIconUrl(guild)
+
+                  if (isRegistered && registeredServer) {
+                      // LINKED SERVER CARD
+                      return (
+                          <Link key={guild.id} href={`/dashboard/servers/${registeredServer.id}`} className="glass-card p-4 rounded-2xl hover:bg-white/5 transition-all flex items-center gap-4 group border border-white/5 hover:border-electric/30">
+                              <div className="w-16 h-16 rounded-xl bg-gray-800 flex items-center justify-center overflow-hidden shrink-0 border border-white/10 group-hover:border-electric/50 transition-colors">
+                                  {iconUrl ? (
+                                      <img src={iconUrl} alt={guild.name} className="w-full h-full object-cover" />
+                                  ) : (
+                                      <span className="text-xl font-bold text-gray-400">{guild.name.charAt(0)}</span>
+                                  )}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                  <h3 className="font-bold text-white truncate text-lg group-hover:text-electric transition-colors">{guild.name}</h3>
+                                  <p className="text-xs text-green-400 font-mono mt-1">Active</p>
+                              </div>
+                              <div className="text-gray-500 group-hover:text-white transition-colors">
+                                  <Settings02Icon size={20} />
+                              </div>
+                          </Link>
+                      )
+                  } else {
+                      // UNLINKED GUILD CARD
+                       return (
+                          <div key={guild.id} className="glass-card p-4 rounded-2xl opacity-60 hover:opacity-100 transition-all flex items-center gap-4 group grayscale hover:grayscale-0">
+                              <div className="w-16 h-16 rounded-xl bg-gray-800 flex items-center justify-center overflow-hidden shrink-0">
+                                  {iconUrl ? (
+                                      <img src={iconUrl} alt={guild.name} className="w-full h-full object-cover" />
+                                  ) : (
+                                      <span className="text-xl font-bold text-gray-400">{guild.name.charAt(0)}</span>
+                                  )}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                  <h3 className="font-bold text-white truncate text-lg">{guild.name}</h3>
+                                  <form action={createServer} className="flex mt-2">
+                                        <input type="hidden" name="name" value={guild.name} />
+                                        <input type="hidden" name="guildId" value={guild.id} />
+                                        <input type="hidden" name="icon" value={iconUrl || ''} />
+                                        <input type="hidden" name="slug" value={guild.id} /> {/* Temp slug */}
+                                        <button className="text-xs bg-white text-black px-3 py-1 rounded-lg font-bold hover:bg-electric hover:text-white transition-colors">
+                                            Setup
+                                        </button>
+                                  </form>
+                              </div>
+                          </div>
+                      )
+                  }
+                })}
+            </div>
+        </section>
+
+         {/* Placeholder for Command Usage / Other Stats */}
+         <section className="pt-8 border-t border-white/5">
+            <h2 className="text-lg font-bold text-white mb-4">Command Usage</h2>
+            <p className="text-sm text-gray-500 mb-6">Use of commands of your server</p>
+            
+            <div className="p-12 rounded-2xl border border-dashed border-white/10 flex flex-col items-center justify-center text-center gap-4">
+                <div className="p-4 bg-white/5 rounded-full text-gray-600">
+                    <ChartBarLineIcon size={32} />
+                </div>
+                <p className="text-gray-500">Statistics coming soon.</p>
+            </div>
+         </section>
+
+         <footer className="pt-10 pb-4 text-center">
+             <p className="text-[10px] text-gray-600 font-mono">
+                Inspired by <a href="https://github.com/fuma-nama" target="_blank" className="hover:text-electric transition-colors">fuma-nama</a>
+            </p>
+         </footer>
+    </div>
   )
 }

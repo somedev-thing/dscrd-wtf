@@ -1,11 +1,13 @@
-import { supabase } from "@/lib/supabase"
+import dbConnect from "@/lib/db"
+import Server from "@/lib/models/Server"
 import { deleteServer } from "@/lib/actions"
 import { ShieldWarning, Trash } from "@phosphor-icons/react/dist/ssr"
 
-
 export default async function ServerSettingsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const { data: server } = await supabase.from('servers').select('*').eq('id', id).single()
+  
+  await dbConnect()
+  const server = await Server.findById(id).lean() as any
 
   return (
     <div className="p-6 lg:p-10 max-w-4xl mx-auto">

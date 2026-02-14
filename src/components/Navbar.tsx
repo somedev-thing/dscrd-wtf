@@ -15,7 +15,7 @@ export default async function Navbar() {
         {/* Logo Area */}
         <Link href="/" className="flex items-center gap-3 group px-2">
           <div className="w-9 h-9 relative flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
-             <Image src="/assets/img/dscrd-logo-icon.png" width={36} height={36} alt="dscrd.wtf" className="w-full h-full object-contain drop-shadow-[0_0_10px_rgba(0,114,255,0.3)]" />
+             <Image src="/assets/img/dscrd-logo-icon.png" alt="dscrd.wtf" width={32} height={32} className="brightness-0 invert w-full h-full object-contain drop-shadow-[0_0_10px_rgba(0,114,255,0.3)]" />
           </div>
           <span className="font-bold tracking-tight text-gray-200 group-hover:text-white transition-colors font-sans">dscrd.wtf</span>
         </Link>

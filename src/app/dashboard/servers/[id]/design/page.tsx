@@ -1,13 +1,15 @@
-import { supabase } from "@/lib/supabase"
+import dbConnect from "@/lib/db"
+import Server from "@/lib/models/Server"
 import { updateServer } from "@/lib/actions"
 import { Palette } from "@phosphor-icons/react/dist/ssr"
 
-
 export default async function ServerDesignPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const { data: server } = await supabase.from('servers').select('*').eq('id', id).single()
+  
+  await dbConnect()
+  const server = await Server.findById(id).lean() as any
 
-  const currentTheme = server?.theme_config || { color: '#5865F2', mode: 'dark' }
+  const currentTheme = server?.themeConfig || { color: '#5865F2', mode: 'dark' }
   const colors = [
     { name: 'Discord Blue', value: '#5865F2' },
     { name: 'Electric Blue', value: '#0072ff' },

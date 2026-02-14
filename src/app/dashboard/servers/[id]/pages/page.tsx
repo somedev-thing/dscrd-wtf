@@ -1,12 +1,14 @@
-import { supabase } from "@/lib/supabase"
+import dbConnect from "@/lib/db"
+import ServerPage from "@/lib/models/ServerPage"
 import { createServerPage, deleteServerPage } from "@/lib/actions"
 import { Plus, AppWindow, Trash } from "@phosphor-icons/react/dist/ssr"
-
 
 export default async function ServerPagesPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
 
-  const { data: pages } = await supabase.from('server_pages').select('*').eq('server_id', id).order('position')
+  await dbConnect()
+  const pages = await ServerPage.find({ serverId: id }).sort({ position: 1 }).lean()
+  const serialized = pages.map((p: any) => ({ ...p, id: p._id.toString() }))
 
   return (
     <div className="p-6 lg:p-10 max-w-4xl mx-auto">
@@ -36,8 +38,8 @@ export default async function ServerPagesPage({ params }: { params: Promise<{ id
 
         {/* Page List */}
         <div className="space-y-4">
-            {pages && pages.length > 0 ? (
-                pages.map((page: any) => (
+            {serialized && serialized.length > 0 ? (
+                serialized.map((page: any) => (
                     <div key={page.id} className="bg-[#0a0a0a] border border-[#222] p-4 rounded-xl flex items-center justify-between group">
                         <div className="flex items-center gap-4">
                             <AppWindow size={24} className="text-gray-500" />

@@ -11,7 +11,7 @@ async function handleDelete(formData: FormData) {
   if (id) await deleteLink(id)
 }
 
-export default async function LinksPage() {
+export default async function RedirectsPage() {
   const profile = await ensureProfile()
   if (!profile) return <div>Error loading profile</div>
 
@@ -19,8 +19,8 @@ export default async function LinksPage() {
 
   return (
     <div className="max-w-4xl mx-auto">
-        <h1 className="text-2xl font-bold font-heading text-white mb-2">Links</h1>
-        <p className="text-gray-400 mb-8 font-mono text-sm">Manage the links displayed on your public profile.</p>
+        <h1 className="text-2xl font-bold font-heading text-white mb-2">Redirects</h1>
+        <p className="text-gray-400 mb-8 font-mono text-sm">Manage your shortlinks and bot invites.</p>
 
         {/* Add Link Form */}
         <div className="glass-card p-6 rounded-3xl mb-8">
