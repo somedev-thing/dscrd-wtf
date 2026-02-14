@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@theme {
+  --color-void: #030303;
+  --color-card: #0e0e0e;
+  --color-border: #222222;
+  --color-discord: #5865f2;
+  --color-electric: #0072ff;
+  --color-fanta: #ff9100;
+
+  --font-sans: var(--font-outfit), sans-serif;
+  --font-body: var(--font-lexend), sans-serif;
+  --font-mono: var(--font-jetbrains), monospace;
+
+  --radius-4xl: 2.5rem;
+
+  --animate-float: float 6s ease-in-out infinite;
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+}
+
+/* Custom Utilities / Base Styles */
+.noise-bg {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #030303;
+}
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #0072ff;
+}
