@@ -25,6 +25,9 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "dscrd.wtf | The Discord Identity Layer",
   description: "Stop sending expired invites. Turn your User ID into a beautiful, permanent profile card.",
+  icons: {
+    icon: '/assets/img/dscrd.wtf-logo-full.png',
+  }
 };
 
 export default function RootLayout({

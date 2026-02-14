@@ -1,6 +1,5 @@
 import NextAuth from "next-auth"
 import Discord from "next-auth/providers/discord"
-import { SupabaseAdapter } from "@auth/supabase-adapter"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost: true,
@@ -10,10 +9,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientSecret: process.env.DISCORD_CLIENT_SECRET,
     })
   ],
-  adapter: SupabaseAdapter({
-    url: process.env.SUPABASE_URL!,
-    secret: process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  }),
   session: { strategy: "jwt" },
   callbacks: {
     async session({ session, token }) {
@@ -35,4 +30,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return token
     }
   },
+  pages: {
+    error: '/auth/error',
+  }
 })
