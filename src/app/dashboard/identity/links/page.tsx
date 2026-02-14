@@ -1,38 +1,37 @@
-import { ensureProfile } from "@/lib/actions"
+import { ensureProfile, addLink, deleteLink } from "@/lib/actions"
 import { getLinksByUserId } from "@/lib/data"
-import { addLink, deleteLink } from "@/lib/actions"
 import { PlusSignIcon, Link01Icon, Delete02Icon } from "hugeicons-react"
 
-
-// Server Action wrapper for delete (needs bind but simple form for now)
 async function handleDelete(formData: FormData) {
   'use server'
   const id = formData.get('id') as string
   if (id) await deleteLink(id)
 }
 
-export default async function RedirectsPage() {
+export default async function IdentityLinksPage() {
   const profile = await ensureProfile()
   if (!profile) return <div>Error loading profile</div>
 
   const links = await getLinksByUserId(profile.userId)
 
   return (
-    <div className="max-w-4xl mx-auto">
-        <h1 className="text-2xl font-bold font-heading text-white mb-2">Redirects</h1>
-        <p className="text-gray-400 mb-8 font-mono text-sm">Manage your shortlinks and bot invites.</p>
+    <div className="max-w-4xl mx-auto space-y-8">
+        <div>
+            <h1 className="text-2xl font-bold font-heading text-white mb-2">Social Links</h1>
+            <p className="text-gray-400 font-mono text-sm">Links displayed on your public profile card.</p>
+        </div>
 
         {/* Add Link Form */}
-        <div className="glass-card p-6 rounded-3xl mb-8">
+        <div className="glass-card p-6 rounded-3xl">
             <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
                 <div className="p-2 bg-electric/10 rounded-lg text-electric"><PlusSignIcon size={20} /></div>
-                Add New Connection
+                Add Social Link
             </h2>
             <form action={addLink} className="flex flex-col md:flex-row gap-4">
                 <input 
                     type="text" 
                     name="title" 
-                    placeholder="Title (e.g. Website)" 
+                    placeholder="Title (e.g. GitHub)" 
                     required
                     className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-electric transition-colors placeholder:text-gray-600"
                 />
@@ -86,7 +85,7 @@ export default async function RedirectsPage() {
                     <div className="p-4 rounded-full bg-white/5 text-gray-600">
                         <Link01Icon size={32} />
                     </div>
-                    No connections added yet.
+                    No links added yet. Add your first one above.
                 </div>
             )}
         </div>

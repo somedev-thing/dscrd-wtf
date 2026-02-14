@@ -10,7 +10,9 @@ import {
     Settings02Icon, 
     Logout01Icon,
     Menu01Icon,
-    Cancel01Icon
+    Cancel01Icon,
+    ServerStack02Icon,
+    CreditCardIcon
 } from "hugeicons-react"
 import { useState } from "react"
 
@@ -18,7 +20,9 @@ const NAV_ITEMS = [
     { label: "Overview", href: "/dashboard", icon: DashboardSquare01Icon },
     { label: "Identity", href: "/dashboard/identity", icon: UserCircleIcon },
     { label: "Redirects", href: "/dashboard/redirects", icon: LinkSquare01Icon },
+    { label: "Servers", href: "/dashboard/servers", icon: ServerStack02Icon },
     { label: "Settings", href: "/dashboard/settings", icon: Settings02Icon },
+    { label: "Billing", href: "/dashboard/billing", icon: CreditCardIcon },
 ]
 
 export function Sidebar({ user }: { user: any }) {

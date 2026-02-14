@@ -15,7 +15,7 @@ export default async function LinksPage() {
   const profile = await ensureProfile()
   if (!profile) return <div>Error loading profile</div>
 
-  const links = await getLinksByUserId(profile.user_id)
+  const links = await getLinksByUserId(profile.userId)
 
   return (
     <div className="max-w-4xl mx-auto">
