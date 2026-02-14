@@ -38,7 +38,7 @@ export default async function ServerPagesPage({ params }: { params: Promise<{ id
                 pages.map((page: any) => (
                     <div key={page.id} className="bg-[#0a0a0a] border border-[#222] p-4 rounded-xl flex items-center justify-between group">
                         <div className="flex items-center gap-4">
-                            <i className="lni lni-notepad text-xl text-gray-500"></i>
+                            <i className="lni lni-notebook-1 text-xl text-gray-500"></i>
                             <div>
                                 <div className="font-bold text-white">{page.title}</div>
                                 <div className="text-xs text-gray-500 font-mono">/{page.slug}</div>

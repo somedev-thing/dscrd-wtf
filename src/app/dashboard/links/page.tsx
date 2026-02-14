@@ -57,7 +57,7 @@ export default async function LinksPage() {
                     <div key={link.id} className="bg-[#0a0a0a] border border-[#222] p-4 rounded-xl flex items-center justify-between group hover:border-[#333] transition-colors">
                         <div className="flex items-center gap-4">
                             <div className="w-10 h-10 rounded-lg bg-[#111] flex items-center justify-center text-gray-400">
-                                <i className="lni lni-link-2 text-xl"></i>
+                                <i className="lni lni-link-2-angular-right text-xl"></i>
                             </div>
                             <div>
                                 <div className="font-bold text-white">{link.title}</div>

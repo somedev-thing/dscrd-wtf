@@ -36,7 +36,7 @@ export default async function ServerDesignPage({ params }: { params: Promise<{ i
 
             <div className="flex justify-end">
                 <button type="submit" className="bg-white text-black hover:bg-electric hover:text-white px-8 py-3 rounded-xl font-bold transition-all flex items-center gap-2">
-                    <i className="lni lni-color-palette"></i> Save Design
+                    <i className="lni lni-colour-palette-3"></i> Save Design
                 </button>
             </div>
         </form>

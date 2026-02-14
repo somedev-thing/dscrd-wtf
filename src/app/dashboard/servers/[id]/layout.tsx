@@ -43,9 +43,9 @@ export default async function ServerLayout({ children, params }: { children: Rea
         {/* Tabs */}
         <div className="flex border-b border-[#222] px-6 lg:px-10 overflow-x-auto">
             <NavLink href={`/dashboard/servers/${id}`} icon="lni-dashboard">Overview</NavLink>
-            <NavLink href={`/dashboard/servers/${id}/pages`} icon="lni-notepad">Pages</NavLink>
-            <NavLink href={`/dashboard/servers/${id}/design`} icon="lni-color-palette">Design</NavLink>
-            <NavLink href={`/dashboard/servers/${id}/settings`} icon="lni-cog-1">Settings</NavLink>
+            <NavLink href={`/dashboard/servers/${id}/pages`} icon="lni-notebook-1">Pages</NavLink>
+            <NavLink href={`/dashboard/servers/${id}/design`} icon="lni-colour-palette-3">Design</NavLink>
+            <NavLink href={`/dashboard/servers/${id}/settings`} icon="lni-gear-1">Settings</NavLink>
         </div>
 
         {/* Content */}

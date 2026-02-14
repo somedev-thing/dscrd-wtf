@@ -7,6 +7,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     Discord({
       clientId: process.env.DISCORD_CLIENT_ID,
       clientSecret: process.env.DISCORD_CLIENT_SECRET,
+      authorization: "https://discord.com/api/oauth2/authorize?scope=identify+guilds",
     })
   ],
   session: { strategy: "jwt" },
@@ -18,14 +19,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.flags = token.flags
         // @ts-ignore
         session.user.username = token.username
+        // @ts-ignore
+        session.user.accessToken = token.accessToken
       }
       return session
     },
-    async jwt({ token, profile }) {
+    async jwt({ token, profile, account }) {
       if (profile) {
         token.flags = profile.flags
         token.username = profile.username
         token.premium_type = profile.premium_type
+      }
+      if (account) {
+        token.accessToken = account.access_token
       }
       return token
     }

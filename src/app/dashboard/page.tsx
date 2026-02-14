@@ -71,7 +71,7 @@ export default async function DashboardPage() {
                 {/* Main Stat */}
                 <div className="bg-[#0a0a0a] border border-[#222] hover:border-[#333] transition-colors p-6 rounded-2xl flex flex-col justify-between h-40 relative overflow-hidden group">
                     <div className="absolute right-0 top-0 p-6 text-electric opacity-10 group-hover:scale-110 transition-transform">
-                        <i className="lni lni-bar-chart-2 text-6xl"></i>
+                        <i className="lni lni-bar-chart-4 text-6xl"></i>
                     </div>
                     <div className="text-gray-400 text-sm font-mono font-medium">TOTAL CLICKS</div>
                     <div>
@@ -117,8 +117,8 @@ export default async function DashboardPage() {
                     <div className="flex items-center justify-between">
                         <h2 className="text-lg font-bold text-white font-sans">Active Connections</h2>
                         <div className="flex gap-2">
-                             <button className="p-2 text-gray-500 hover:text-white transition-colors"><i className="lni lni-funnel"></i></button>
-                             <button className="p-2 text-gray-500 hover:text-white transition-colors"><i className="lni lni-reload"></i></button>
+                             <button className="p-2 text-gray-500 hover:text-white transition-colors"><i className="lni lni-funnel-1"></i></button>
+                             <button className="p-2 text-gray-500 hover:text-white transition-colors"><i className="lni lni-refresh-circle-1-clockwise"></i></button>
                         </div>
                     </div>
 
@@ -129,7 +129,7 @@ export default async function DashboardPage() {
                             <div className="w-12 h-12 rounded-lg bg-[#111] border border-[#222] flex items-center justify-center text-electric shrink-0 relative overflow-hidden">
                                 {session.user.image ? 
                                    <Image src={session.user.image} alt="Avatar" width={48} height={48} className="object-cover w-full h-full opacity-80" /> : 
-                                   <i className="lni lni-users text-2xl"></i>
+                                   <i className="lni lni-user-multiple-4 text-2xl"></i>
                                 }
                             </div>
                             <div className="flex-1 min-w-0">
@@ -165,7 +165,7 @@ export default async function DashboardPage() {
                                 </div>
                                 <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                     <Link href="/dashboard/links" className="p-2 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white"><i className="lni lni-pencil-1"></i></Link>
-                                    <a href={link.url} target="_blank" className="p-2 rounded-lg hover:bg-white/10 text-gray-400 hover:text-electric"><i className="lni lni-link-2"></i></a>
+                                    <a href={link.url} target="_blank" className="p-2 rounded-lg hover:bg-white/10 text-gray-400 hover:text-electric"><i className="lni lni-link-2-angular-right"></i></a>
                                 </div>
                             </div>
                         ))}

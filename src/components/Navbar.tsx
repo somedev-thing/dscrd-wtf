@@ -22,11 +22,11 @@ export default async function Navbar() {
         <div className="flex items-center gap-1 bg-white/5 rounded-full p-1 border border-white/5">
            <Link href="/#features" className="px-4 py-2 rounded-full hover:bg-white/5 transition-all text-xs font-medium text-gray-400 hover:text-white flex items-center gap-2">
               <span className="hidden sm:inline">Features</span>
-              <i className="lni lni-grid-1 sm:hidden"></i>
+              <i className="lni lni-dashboard-square-1 sm:hidden"></i>
            </Link>
            <Link href="/pricing" className="px-4 py-2 rounded-full hover:bg-white/5 transition-all text-xs font-medium text-gray-400 hover:text-white flex items-center gap-2">
               <span className="hidden sm:inline">Pricing</span>
-              <i className="lni lni-tag sm:hidden"></i>
+              <i className="lni lni-ticket-1 sm:hidden"></i>
            </Link>
            {/* Mobile hidden link */}
            <Link href="/how-it-works" className="hidden sm:flex px-4 py-2 rounded-full hover:bg-white/5 transition-all text-xs font-medium text-gray-400 hover:text-white items-center gap-2">

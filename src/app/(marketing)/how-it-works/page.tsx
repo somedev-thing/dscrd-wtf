@@ -30,7 +30,7 @@ export default function HowItWorks() {
         {/* Step 2 */}
         <div className="relative flex flex-col md:flex-row gap-8 items-start">
           <div className="hidden md:flex w-16 h-16 rounded-full bg-card border border-electric items-center justify-center z-10 shrink-0">
-             <i className="lni lni-color-palette text-electric text-xl"></i>
+             <i className="lni lni-colour-palette-3 text-electric text-xl"></i>
           </div>
           <div className="bg-card border border-border p-8 rounded-[2rem] flex-1">
              <h2 className="text-2xl font-bold mb-4 text-white font-sans">2. Customize Card</h2>
@@ -44,7 +44,7 @@ export default function HowItWorks() {
         {/* Step 3 */}
         <div className="relative flex flex-col md:flex-row gap-8 items-start">
            <div className="hidden md:flex w-16 h-16 rounded-full bg-card border border-electric items-center justify-center z-10 shrink-0">
-             <i className="lni lni-share text-electric text-xl"></i>
+             <i className="lni lni-share-1 text-electric text-xl"></i>
           </div>
           <div className="bg-card border border-border p-8 rounded-[2rem] flex-1">
              <h2 className="text-2xl font-bold mb-4 text-white font-sans">3. Share Everywhere</h2>

@@ -112,6 +112,8 @@ export async function createServer(formData: FormData) {
 
   const name = formData.get('name') as string
   const slug = formData.get('slug') as string
+  const guildId = formData.get('guildId') as string | null
+  const icon = formData.get('icon') as string | null
   
   if (!name || !slug) return
 
@@ -123,6 +125,8 @@ export async function createServer(formData: FormData) {
       owner_id: session.user.id,
       name,
       slug,
+      discord_guild_id: guildId || null,
+      icon: icon || null,
       theme_config: { color: '#5865F2', mode: 'dark' }
   }).select().single()
 

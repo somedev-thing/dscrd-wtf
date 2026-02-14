@@ -59,7 +59,7 @@ export default function DashboardSidebar({ user }: { user: User }) {
                 onClick={() => setIsOpen(false)}
                 className={`flex items-center gap-4 px-6 py-3 transition-colors group ${pathname === '/dashboard' ? 'bg-[#111] border-r-2 border-electric text-white' : 'text-gray-400 hover:text-white hover:bg-[#111]'}`}
               >
-                  <i className={`lni lni-dashboard text-lg ${pathname === '/dashboard' ? 'text-electric' : 'group-hover:text-electric transition-colors'}`}></i>
+                  <i className={`lni lni-dashboard-square-1 text-lg ${pathname === '/dashboard' ? 'text-electric' : 'group-hover:text-electric transition-colors'}`}></i>
                   <span className="font-medium">Dashboard</span>
               </Link>
               <Link 
@@ -67,7 +67,7 @@ export default function DashboardSidebar({ user }: { user: User }) {
                 onClick={() => setIsOpen(false)}
                 className={`flex items-center gap-4 px-6 py-3 transition-colors group ${pathname.startsWith('/dashboard/servers') ? 'bg-[#111] border-r-2 border-electric text-white' : 'text-gray-400 hover:text-white hover:bg-[#111]'}`}
               >
-                  <i className={`lni lni-cloud-server text-lg ${pathname.startsWith('/dashboard/servers') ? 'text-electric' : 'group-hover:text-electric transition-colors'}`}></i>
+                  <i className={`lni lni-monitor text-lg ${pathname.startsWith('/dashboard/servers') ? 'text-electric' : 'group-hover:text-electric transition-colors'}`}></i>
                   <span className="font-medium">Servers</span>
               </Link>
               <Link 
@@ -75,7 +75,7 @@ export default function DashboardSidebar({ user }: { user: User }) {
                 onClick={() => setIsOpen(false)}
                 className={`flex items-center gap-4 px-6 py-3 transition-colors group ${pathname === '/dashboard/links' ? 'bg-[#111] border-r-2 border-electric text-white' : 'text-gray-400 hover:text-white hover:bg-[#111]'}`}
               >
-                  <i className={`lni lni-link-2 text-lg ${pathname === '/dashboard/links' ? 'text-electric' : 'group-hover:text-electric transition-colors'}`}></i>
+                  <i className={`lni lni-link-2-angular-right text-lg ${pathname === '/dashboard/links' ? 'text-electric' : 'group-hover:text-electric transition-colors'}`}></i>
                   <span className="font-medium">Links</span>
                   <span className="flex ml-auto bg-electric/10 text-electric text-[10px] font-mono px-1.5 py-0.5 rounded">3</span>
               </Link>
@@ -84,7 +84,7 @@ export default function DashboardSidebar({ user }: { user: User }) {
                 onClick={() => setIsOpen(false)}
                 className={`flex items-center gap-4 px-6 py-3 transition-colors group ${pathname === '/dashboard/analytics' ? 'bg-[#111] border-r-2 border-electric text-white' : 'text-gray-400 hover:text-white hover:bg-[#111]'}`}
               >
-                  <i className={`lni lni-bar-chart-2 text-lg ${pathname === '/dashboard/analytics' ? 'text-electric' : 'group-hover:text-electric transition-colors'}`}></i>
+                  <i className={`lni lni-bar-chart-4 text-lg ${pathname === '/dashboard/analytics' ? 'text-electric' : 'group-hover:text-electric transition-colors'}`}></i>
                   <span className="font-medium">Analytics</span>
               </Link>
 
@@ -95,11 +95,11 @@ export default function DashboardSidebar({ user }: { user: User }) {
                 onClick={() => setIsOpen(false)}
                 className={`flex items-center gap-4 px-6 py-3 transition-colors group ${pathname === '/dashboard/design' ? 'bg-[#111] border-r-2 border-electric text-white' : 'text-gray-400 hover:text-white hover:bg-[#111]'}`}
               >
-                  <i className={`lni lni-color-palette text-lg ${pathname === '/dashboard/design' ? 'text-electric' : 'group-hover:text-electric transition-colors'}`}></i>
+                  <i className={`lni lni-colour-palette-3 text-lg ${pathname === '/dashboard/design' ? 'text-electric' : 'group-hover:text-electric transition-colors'}`}></i>
                   <span className="font-medium">Design</span>
               </Link>
               <Link href="/dashboard/settings" className="flex items-center gap-4 px-6 py-3 text-gray-400 hover:text-white hover:bg-[#111] transition-colors group">
-                  <i className="lni lni-cog-1 text-lg group-hover:text-electric transition-colors"></i>
+                  <i className="lni lni-gear-1 text-lg group-hover:text-electric transition-colors"></i>
                   <span className="font-medium">Settings</span>
               </Link>
           </div>
@@ -112,7 +112,7 @@ export default function DashboardSidebar({ user }: { user: User }) {
                       <div className="text-xs font-bold text-white truncate group-hover:text-electric transition-colors">{user.name}</div>
                       <div className="text-[10px] text-gray-500 font-mono truncate">Online</div>
                   </div>
-                  <i className="lni lni-chevron-right ml-auto text-gray-600 text-xs"></i>
+                  <i className="lni lni-arrow-right ml-auto text-gray-600 text-xs"></i>
               </button>
           </div>
       </aside>

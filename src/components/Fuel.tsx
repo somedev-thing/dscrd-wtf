@@ -5,7 +5,7 @@ export default function Fuel() {
     <section id="fuel" className="max-w-2xl mx-auto bg-card border border-border hover:border-fanta/40 rounded-[2.5rem] p-10 text-center relative overflow-hidden group transition-colors mb-24 mx-6">
       <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-red-500/5 pointer-events-none"></div>
       <div className="inline-block p-3 rounded-full bg-orange-500/10 mb-4 group-hover:scale-110 transition-transform">
-        <i className="lni lni-coffee-cup text-fanta text-3xl"></i>
+        <i className="lni lni-coffee-cup-2 text-fanta text-3xl"></i>
       </div>
       <h2 className="text-2xl font-bold text-white mb-4 font-sans">The Fuel Supply</h2>
       <p className="text-gray-400 mb-8 font-body">
@@ -17,7 +17,7 @@ export default function Fuel() {
           <i className="lni lni-heart"></i> Buy me a Coke (€2)
         </button>
         <button className="px-6 py-3 rounded-full bg-[#111] border border-white/10 hover:border-fanta hover:text-fanta transition-colors flex items-center justify-center gap-2 font-mono text-sm">
-          <i className="lni lni-bolt"></i> Buy me a Fanta (€3)
+          <i className="lni lni-bolt-2"></i> Buy me a Fanta (€3)
         </button>
       </div>
     </section>

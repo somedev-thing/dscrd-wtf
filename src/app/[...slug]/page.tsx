@@ -211,7 +211,7 @@ export default async function DynamicPage({ params }: { params: Promise<{ slug: 
                                 // In real app, use specific markdown parser
                             ) : (
                                 <div className="text-center py-20 opacity-50">
-                                    <i className="lni lni-notepad text-5xl mx-auto mb-4 opacity-50"></i>
+                                    <i className="lni lni-notebook-1 text-5xl mx-auto mb-4 opacity-50"></i>
                                     <p>Welcome to {server.name}.</p>
                                     <p className="text-sm">This page shows the server status and information.</p>
                                 </div>

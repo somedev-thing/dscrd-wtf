@@ -30,14 +30,14 @@ export default async function ThemePage() {
                     <label className="cursor-pointer">
                         <input type="radio" name="mode" value="dark" defaultChecked={currentTheme.mode === 'dark'} className="peer sr-only" />
                         <div className="w-32 h-24 rounded-xl border-2 border-[#222] peer-checked:border-electric peer-checked:bg-electric/10 flex flex-col items-center justify-center gap-2 transition-all">
-                            <i className="lni lni-night text-2xl text-gray-400"></i>
+                            <i className="lni lni-moon-half-right-5 text-2xl text-gray-400"></i>
                             <span className="text-sm font-bold text-gray-400 peer-checked:text-white">Dark</span>
                         </div>
                     </label>
                     <label className="cursor-pointer">
                         <input type="radio" name="mode" value="light" defaultChecked={currentTheme.mode === 'light'} className="peer sr-only" />
                         <div className="w-32 h-24 rounded-xl border-2 border-[#222] peer-checked:border-electric peer-checked:bg-electric/10 flex flex-col items-center justify-center gap-2 transition-all bg-white/5">
-                            <i className="lni lni-sun text-2xl text-gray-400"></i>
+                            <i className="lni lni-sun-1 text-2xl text-gray-400"></i>
                             <span className="text-sm font-bold text-gray-400 peer-checked:text-white">Light</span>
                         </div>
                     </label>
@@ -67,7 +67,7 @@ export default async function ThemePage() {
                     type="submit" 
                     className="bg-white text-black hover:bg-electric hover:text-white px-8 py-3 rounded-xl font-bold transition-all flex items-center gap-2"
                 >
-                    <i className="lni lni-color-palette"></i> Save Theme
+                    <i className="lni lni-colour-palette-3"></i> Save Theme
                 </button>
             </div>
 

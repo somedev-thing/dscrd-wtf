@@ -28,7 +28,7 @@ export default async function ServerSettingsPage({ params }: { params: Promise<{
 
         <div className="bg-red-500/5 border border-red-500/20 p-6 rounded-2xl">
             <h3 className="text-lg font-bold text-red-500 mb-2 flex items-center gap-2">
-                <i className="lni lni-warning text-xl"></i> Danger Zone
+                <i className="lni lni-shield-2 text-xl"></i> Danger Zone
             </h3>
             <p className="text-gray-400 text-sm mb-6">Deleting a server is irreversible. All pages and data will be lost.</p>
             
