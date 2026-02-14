@@ -2,6 +2,7 @@
 
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import { ShieldWarning } from '@phosphor-icons/react'
 
 import { Suspense } from 'react'
 
@@ -14,7 +15,7 @@ function ErrorContent() {
       <div className="absolute inset-0 bg-red-500/5 ptr-events-none"></div>
       
       <div className="w-16 h-16 bg-red-900/20 rounded-full flex items-center justify-center mx-auto mb-6 text-red-500">
-        <i className="lni lni-shield-2 text-3xl"></i>
+        <ShieldWarning size={32} weight="duotone" />
       </div>
 
       <h1 className="text-2xl font-bold text-white mb-2 font-sans">Authentication Error</h1>

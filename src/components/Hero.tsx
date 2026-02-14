@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from 'react'
+import { ArrowRight } from '@phosphor-icons/react'
 
 export default function Hero() {
   const [username, setUsername] = useState('')
@@ -39,7 +40,7 @@ export default function Hero() {
             className="bg-transparent border-none outline-none text-white font-mono placeholder-gray-700 w-full ml-1 focus:ring-0"
           />
           <button className="bg-electric text-white p-3 rounded-full hover:bg-white hover:text-black transition-colors shadow-lg shadow-electric/20">
-            <i className="lni lni-arrow-right text-xl"></i>
+            <ArrowRight size={20} weight="bold" />
           </button>
         </div>
       </div>

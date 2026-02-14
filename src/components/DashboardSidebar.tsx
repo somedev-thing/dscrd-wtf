@@ -1,120 +1,134 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
+import { 
+  DashboardSquare01Icon, 
+  LinkSquare01Icon, 
+  ChartBarLineIcon, 
+  PaintBoardIcon, 
+  Settings02Icon, 
+  ArrowRight01Icon, 
+  Logout01Icon, 
+  Menu01Icon, 
+  Cancel01Icon, 
+  ServerStack02Icon,
+  UserCircleIcon
+} from 'hugeicons-react'
+import { useState } from 'react'
 
-interface User {
-  name?: string | null
-  email?: string | null
-  image?: string | null
-  id?: string
-}
-
-export default function DashboardSidebar({ user }: { user: User }) {
-  const [isOpen, setIsOpen] = useState(false)
+export default function DashboardSidebar({ user }: { user: any }) {
   const pathname = usePathname()
+  const [isOpen, setIsOpen] = useState(false)
 
-  const toggle = () => setIsOpen(!isOpen)
+  const isActive = (path: string) => {
+    return pathname === path || pathname.startsWith(path + '/')
+  }
+
+  const NavItem = ({ href, icon: Icon, label, exact = false }: { href: string, icon: any, label: string, exact?: boolean }) => {
+    const active = exact ? pathname === href : isActive(href)
+    return (
+      <Link 
+        href={href} 
+        onClick={() => setIsOpen(false)}
+        className={`sidebar-link group ${active ? 'active' : ''}`}
+      >
+        <Icon size={20} className={active ? "text-white" : "text-gray-400 group-hover:text-white transition-colors"} />
+        <span className="font-medium font-sans text-sm tracking-wide">{label}</span>
+      </Link>
+    )
+  }
 
   return (
     <>
-      {/* Mobile Header / Hamburger */}
-      <div className="lg:hidden h-16 bg-black border-b border-[#222] flex items-center justify-between px-4 fixed top-0 left-0 right-0 z-50">
-          <Link href="/" className="flex items-center gap-3">
-              <Image src="/assets/img/dscrd-logo-icon.png" width={32} height={32} alt="dscrd.wtf" className="rounded-lg" />
-              <span className="font-bold text-xl tracking-tight font-sans">dscrd<span className="text-electric">.wtf</span></span>
-          </Link>
-          <button onClick={toggle} className="text-gray-400 hover:text-white p-2">
-            {isOpen ? <i className="lni lni-xmark text-2xl"></i> : <i className="lni lni-menu-hamburger-1 text-2xl"></i>}
-          </button>
+      {/* Mobile Toggle */}
+      <div className="lg:hidden fixed top-4 left-4 z-50">
+        <button 
+          onClick={() => setIsOpen(!isOpen)}
+          className="p-2 glass-card rounded-lg text-white shadow-lg"
+        >
+          {isOpen ? <Cancel01Icon size={24} /> : <Menu01Icon size={24} />}
+        </button>
       </div>
 
-      {/* Sidebar Overlay (Mobile) */}
+      {/* Overlay */}
       {isOpen && (
-        <div className="fixed inset-0 bg-black/80 z-40 lg:hidden backdrop-blur-sm" onClick={toggle}></div>
+        <div 
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 lg:hidden"
+          onClick={() => setIsOpen(false)}
+        />
       )}
 
       {/* Sidebar */}
       <aside className={`
-        fixed lg:static inset-y-0 left-0 z-50 w-64 bg-black border-r border-[#222] flex flex-col justify-between transition-transform duration-300 transform 
-        ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        fixed top-0 left-0 h-full w-72 bg-void/95 backdrop-blur-xl border-r border-border z-50 transform transition-transform duration-300 ease-in-out flex flex-col shadow-2xl
+        ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 lg:static lg:bg-transparent lg:border-r lg:border-white/5 lg:shadow-none
       `}>
+        {/* Header */}
+        <div className="h-24 flex items-center px-8">
+           <Link href="/" className="flex items-center gap-3 group">
+              <div className="w-10 h-10 relative shadow-[0_0_20px_-5px_var(--color-electric)] rounded-xl overflow-hidden">
+                <Image 
+                  src="/assets/img/dscrd-logo-icon.png" 
+                  alt="dscrd" 
+                  width={40} 
+                  height={40} 
+                  className="group-hover:scale-110 transition-transform duration-300"
+                />
+              </div>
+              <span className="font-heading font-black text-xl text-white tracking-tight">
+                dscrd.wtf
+              </span>
+           </Link>
+        </div>
+
+        {/* Navigation */}
+        <div className="flex-1 overflow-y-auto py-6 px-4 space-y-2">
           
-          {/* Logo Area (Desktop) */}
-          <div className="h-20 hidden lg:flex items-center justify-start px-6 border-b border-[#222]/50">
-              <Link href="/" className="flex items-center gap-3 group">
-                  <Image src="/assets/img/dscrd-logo-icon.png" width={32} height={32} alt="dscrd.wtf" className="rounded-lg" />
-                  <span className="font-bold text-xl tracking-tight font-sans">dscrd<span className="text-electric">.wtf</span></span>
-              </Link>
+          
+          <div className="px-4 pb-2">
+              <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest font-mono mb-2">Main Menu</div>
           </div>
-
-          {/* Navigation */}
-          <div className="flex-1 py-8 space-y-2 mt-16 lg:mt-0">
-              <div className="px-6 mb-2 text-[10px] font-mono text-gray-500 uppercase tracking-widest">Main</div>
-              
-              <Link 
-                href="/dashboard" 
-                onClick={() => setIsOpen(false)}
-                className={`flex items-center gap-4 px-6 py-3 transition-colors group ${pathname === '/dashboard' ? 'bg-[#111] border-r-2 border-electric text-white' : 'text-gray-400 hover:text-white hover:bg-[#111]'}`}
-              >
-                  <i className={`lni lni-dashboard-square-1 text-lg ${pathname === '/dashboard' ? 'text-electric' : 'group-hover:text-electric transition-colors'}`}></i>
-                  <span className="font-medium">Dashboard</span>
-              </Link>
-              <Link 
-                href="/dashboard/servers" 
-                onClick={() => setIsOpen(false)}
-                className={`flex items-center gap-4 px-6 py-3 transition-colors group ${pathname.startsWith('/dashboard/servers') ? 'bg-[#111] border-r-2 border-electric text-white' : 'text-gray-400 hover:text-white hover:bg-[#111]'}`}
-              >
-                  <i className={`lni lni-monitor text-lg ${pathname.startsWith('/dashboard/servers') ? 'text-electric' : 'group-hover:text-electric transition-colors'}`}></i>
-                  <span className="font-medium">Servers</span>
-              </Link>
-              <Link 
-                href="/dashboard/links" 
-                onClick={() => setIsOpen(false)}
-                className={`flex items-center gap-4 px-6 py-3 transition-colors group ${pathname === '/dashboard/links' ? 'bg-[#111] border-r-2 border-electric text-white' : 'text-gray-400 hover:text-white hover:bg-[#111]'}`}
-              >
-                  <i className={`lni lni-link-2-angular-right text-lg ${pathname === '/dashboard/links' ? 'text-electric' : 'group-hover:text-electric transition-colors'}`}></i>
-                  <span className="font-medium">Links</span>
-                  <span className="flex ml-auto bg-electric/10 text-electric text-[10px] font-mono px-1.5 py-0.5 rounded">3</span>
-              </Link>
-              <Link 
-                href="/dashboard/analytics" 
-                onClick={() => setIsOpen(false)}
-                className={`flex items-center gap-4 px-6 py-3 transition-colors group ${pathname === '/dashboard/analytics' ? 'bg-[#111] border-r-2 border-electric text-white' : 'text-gray-400 hover:text-white hover:bg-[#111]'}`}
-              >
-                  <i className={`lni lni-bar-chart-4 text-lg ${pathname === '/dashboard/analytics' ? 'text-electric' : 'group-hover:text-electric transition-colors'}`}></i>
-                  <span className="font-medium">Analytics</span>
-              </Link>
-
-              <div className="px-6 mt-8 mb-2 text-[10px] font-mono text-gray-500 uppercase tracking-widest">System</div>
-              
-              <Link 
-                href="/dashboard/design" 
-                onClick={() => setIsOpen(false)}
-                className={`flex items-center gap-4 px-6 py-3 transition-colors group ${pathname === '/dashboard/design' ? 'bg-[#111] border-r-2 border-electric text-white' : 'text-gray-400 hover:text-white hover:bg-[#111]'}`}
-              >
-                  <i className={`lni lni-colour-palette-3 text-lg ${pathname === '/dashboard/design' ? 'text-electric' : 'group-hover:text-electric transition-colors'}`}></i>
-                  <span className="font-medium">Design</span>
-              </Link>
-              <Link href="/dashboard/settings" className="flex items-center gap-4 px-6 py-3 text-gray-400 hover:text-white hover:bg-[#111] transition-colors group">
-                  <i className="lni lni-gear-1 text-lg group-hover:text-electric transition-colors"></i>
-                  <span className="font-medium">Settings</span>
-              </Link>
+          <NavItem href="/dashboard" icon={DashboardSquare01Icon} label="Dashboard" exact />
+          <NavItem href="/dashboard/profile" icon={UserCircleIcon} label="Profile" />
+          <NavItem href="/dashboard/links" icon={LinkSquare01Icon} label="Connections" />
+          <NavItem href="/dashboard/servers" icon={ServerStack02Icon} label="Servers" />
+          
+          <div className="px-4 pb-2 pt-6">
+              <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest font-mono mb-2">Configuration</div>
           </div>
+          <NavItem href="/dashboard/analytics" icon={ChartBarLineIcon} label="Analytics" />
+          <NavItem href="/dashboard/design" icon={PaintBoardIcon} label="Theme" />
+          <NavItem href="/dashboard/settings" icon={Settings02Icon} label="Settings" />
+        </div>
 
-          {/* Sidebar Footer */}
-          <div className="p-4 border-t border-[#222]/50">
-              <button className="w-full bg-[#111] hover:bg-[#222] border border-[#222] p-3 rounded-xl flex items-center gap-3 transition-colors group text-left">
-                  {user.image && <img src={user.image} className="w-8 h-8 rounded-lg bg-black object-cover" alt="Avatar" />}
-                  <div className="overflow-hidden min-w-0">
-                      <div className="text-xs font-bold text-white truncate group-hover:text-electric transition-colors">{user.name}</div>
-                      <div className="text-[10px] text-gray-500 font-mono truncate">Online</div>
-                  </div>
-                  <i className="lni lni-arrow-right ml-auto text-gray-600 text-xs"></i>
-              </button>
+        {/* User Footer */}
+        <div className="p-6">
+          <div className="glass-card p-4 rounded-2xl flex items-center gap-3 group cursor-pointer hover:bg-white/5 transition-colors">
+             <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-electric to-phantom-accent p-[1px]">
+                <div className="w-full h-full rounded-full bg-black overflow-hidden relative">
+                    {user.image ? (
+                    <Image src={user.image} alt={user.name} width={40} height={40} className="w-full h-full object-cover" />
+                    ) : (
+                    <div className="w-full h-full flex items-center justify-center text-white font-bold text-sm">
+                        {user.name?.charAt(0)}
+                    </div>
+                    )}
+                </div>
+             </div>
+             <div className="flex-1 min-w-0">
+                <p className="text-sm font-bold text-white truncate font-sans">{user.name}</p>
+                <div className="flex items-center gap-1.5">
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
+                    <p className="text-[10px] text-gray-400 font-mono">ONLINE</p>
+                </div>
+             </div>
+             <button className="text-gray-500 hover:text-white transition-colors">
+               <Logout01Icon size={18} />
+             </button>
           </div>
+        </div>
       </aside>
     </>
   )

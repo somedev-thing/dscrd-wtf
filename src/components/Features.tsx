@@ -1,5 +1,6 @@
 
 import Image from 'next/image'
+import { User, Image as ImageIcon, ShieldCheck, Code } from '@phosphor-icons/react/dist/ssr'
 
 export default function Features() {
   return (
@@ -7,8 +8,8 @@ export default function Features() {
       
       {/* Card 1: The Profile Preview */}
       <div className="md:col-span-2 bg-card border border-border hover:border-electric/60 hover:shadow-[0_0_30px_rgba(0,114,255,0.05)] rounded-[2.5rem] p-10 relative overflow-hidden group transition-all duration-500">
-        <div className="absolute top-0 right-0 p-8 opacity-20 group-hover:opacity-100 group-hover:rotate-12 transition-all duration-500">
-          <i className="lni lni-user-4 text-white text-7xl stroke-1"></i>
+        <div className="absolute top-0 right-0 p-8 opacity-20 group-hover:opacity-100 group-hover:rotate-12 transition-all duration-500 text-white">
+          <User size={96} weight="light" />
         </div>
         <div className="relative z-10 h-full flex flex-col justify-between">
           <div>
@@ -37,7 +38,7 @@ export default function Features() {
       <div className="bg-card border border-border hover:border-electric/60 hover:shadow-[0_0_30px_rgba(0,114,255,0.05)] rounded-[2.5rem] p-8 relative overflow-hidden group transition-all duration-300">
         <div className="h-full flex flex-col justify-between">
           <div className="w-12 h-12 rounded-xl bg-[#111] border border-white/5 flex items-center justify-center mb-4 text-electric group-hover:scale-110 transition-transform">
-            <i className="lni lni-mountains-2 text-electric text-2xl"></i>
+            <ImageIcon size={32} weight="duotone" />
           </div>
           <div>
             <h3 className="text-xl font-bold text-white mb-2 font-sans">Dynamic Embeds</h3>
@@ -53,7 +54,7 @@ export default function Features() {
 
       {/* Card 3: Anti-Tracking */}
       <div className="bg-card border border-border hover:border-electric/60 hover:shadow-[0_0_30px_rgba(0,114,255,0.05)] rounded-[2.5rem] p-8 flex flex-col justify-center items-center text-center group transition-all duration-300">
-        <i className="lni lni-shield-2 text-gray-700 group-hover:text-green-500 transition-colors text-6xl stroke-1 mb-4"></i>
+        <ShieldCheck size={64} weight="light" className="text-gray-700 group-hover:text-green-500 transition-colors mb-4" />
         <h3 className="font-bold text-white font-sans">No Creepy Tracking</h3>
         <p className="text-sm text-gray-400 mt-2 font-body">We just count clicks so you can feel famous. No cookies, no ad-tech BS.</p>
       </div>
@@ -65,7 +66,7 @@ export default function Features() {
             <p className="text-gray-400 text-sm font-body">Create <code className="bg-white/10 px-1 rounded text-electric font-mono">dscrd.wtf/bot/my-bot</code> links. Track invite sources.</p>
          </div>
          <div className="w-16 h-16 rounded-full bg-[#111] border border-white/5 flex items-center justify-center group-hover:rotate-12 transition-transform">
-            <i className="lni lni-code-1 text-gray-500 group-hover:text-electric transition-colors text-3xl"></i>
+            <Code size={32} weight="duotone" className="text-gray-500 group-hover:text-electric transition-colors" />
          </div>
       </div>
 

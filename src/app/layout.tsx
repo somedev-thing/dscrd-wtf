@@ -36,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
-        <link href="/assets/icons/regular-font/lineicons-free.css" rel="stylesheet" />
+
       </head>
       <body
         className={`${outfit.variable} ${lexend.variable} ${jetbrainsMono.variable} antialiased bg-void text-gray-200 font-body selection:bg-electric selection:text-white`}

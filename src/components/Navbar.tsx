@@ -1,7 +1,9 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 import { auth } from "@/auth"
 import SignInButton from "./SignInButton"
+import { SquaresFour, Ticket, User } from '@phosphor-icons/react/dist/ssr'
 
 export default async function Navbar() {
   const session = await auth()
@@ -13,7 +15,7 @@ export default async function Navbar() {
         {/* Logo Area */}
         <Link href="/" className="flex items-center gap-3 group px-2">
           <div className="w-9 h-9 relative flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
-             <img src="/assets/img/dscrd-logo-icon.png" alt="dscrd.wtf" className="w-full h-full object-contain drop-shadow-[0_0_10px_rgba(0,114,255,0.3)]" />
+             <Image src="/assets/img/dscrd-logo-icon.png" width={36} height={36} alt="dscrd.wtf" className="w-full h-full object-contain drop-shadow-[0_0_10px_rgba(0,114,255,0.3)]" />
           </div>
           <span className="font-bold tracking-tight text-gray-200 group-hover:text-white transition-colors font-sans">dscrd.wtf</span>
         </Link>
@@ -22,11 +24,11 @@ export default async function Navbar() {
         <div className="flex items-center gap-1 bg-white/5 rounded-full p-1 border border-white/5">
            <Link href="/#features" className="px-4 py-2 rounded-full hover:bg-white/5 transition-all text-xs font-medium text-gray-400 hover:text-white flex items-center gap-2">
               <span className="hidden sm:inline">Features</span>
-              <i className="lni lni-dashboard-square-1 sm:hidden"></i>
+              <SquaresFour size={16} className="sm:hidden" />
            </Link>
            <Link href="/pricing" className="px-4 py-2 rounded-full hover:bg-white/5 transition-all text-xs font-medium text-gray-400 hover:text-white flex items-center gap-2">
               <span className="hidden sm:inline">Pricing</span>
-              <i className="lni lni-ticket-1 sm:hidden"></i>
+              <Ticket size={16} className="sm:hidden" />
            </Link>
            {/* Mobile hidden link */}
            <Link href="/how-it-works" className="hidden sm:flex px-4 py-2 rounded-full hover:bg-white/5 transition-all text-xs font-medium text-gray-400 hover:text-white items-center gap-2">
@@ -38,7 +40,7 @@ export default async function Navbar() {
         <div className="pl-2 flex items-center gap-2">
            {session?.user ? (
              <Link href="/dashboard" className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors text-xs font-bold font-sans">
-               <i className="lni lni-user-4"></i>
+               <User size={16} weight="bold" />
                <span className="hidden sm:inline">Dashboard</span>
              </Link>
            ) : (
@@ -49,4 +51,3 @@ export default async function Navbar() {
     </nav>
   )
 }
-

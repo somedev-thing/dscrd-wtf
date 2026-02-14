@@ -1,15 +1,18 @@
--- Create users table
+-- 1. Enable UUID extension
+create extension if not exists "uuid-ossp";
+
+-- 2. Create users table (NextAuth)
 create table if not exists users (
-  id uuid not null primary key default gen_random_uuid(),
+  id uuid not null primary key default uuid_generate_v4(),
   name text,
   email text,
   emailVerified timestamp with time zone,
   image text
 );
 
--- Create accounts table
+-- 3. Create accounts table (NextAuth)
 create table if not exists accounts (
-  id uuid not null primary key default gen_random_uuid(),
+  id uuid not null primary key default uuid_generate_v4(),
   userId uuid not null references users(id) on delete cascade,
   type text not null,
   provider text not null,
@@ -21,51 +24,41 @@ create table if not exists accounts (
   scope text,
   id_token text,
   session_state text,
-  
   constraint provider_unique unique(provider, providerAccountId)
 );
 
--- Create sessions table
+-- 4. Create sessions table (NextAuth)
 create table if not exists sessions (
-  id uuid not null primary key default gen_random_uuid(),
+  id uuid not null primary key default uuid_generate_v4(),
   sessionToken text not null unique,
   userId uuid not null references users(id) on delete cascade,
   expires timestamp with time zone not null
 );
 
--- Create verification_tokens table
+-- 5. Create verification_tokens table (NextAuth)
 create table if not exists verification_tokens (
   identifier text not null,
   token text not null unique,
   expires timestamp with time zone not null,
-  
   constraint token_unique unique(identifier, token)
 );
 
--- Create bots table (New)
-create table if not exists bots (
-  id uuid not null primary key default gen_random_uuid(),
-  slug text not null unique,
-  invite_url text not null,
-  clicks bigint default 0,
-  created_at timestamp with time zone default now()
-);
-
--- Ensure profiles links to users correctly
--- checking if profiles table exists, if not create it broadly matching previous knowledge
+-- 6. Create profiles table (App Logic)
 create table if not exists profiles (
-  id uuid not null primary key default gen_random_uuid(),
+  id uuid not null primary key default uuid_generate_v4(),
   user_id uuid not null references users(id) on delete cascade,
   username text unique,
   bio text,
-  theme_config jsonb,
+  theme_config jsonb default '{"mode": "dark", "color": "#5865F2"}'::jsonb,
+  is_verified boolean default false,
+  plan text default 'free', 
   created_at timestamp with time zone default now(),
   constraint profiles_user_id_unique unique(user_id)
 );
 
--- Ensure servers table exists
+-- 7. Create servers table
 create table if not exists servers (
-  id uuid not null primary key default gen_random_uuid(),
+  id uuid not null primary key default uuid_generate_v4(),
   owner_id uuid not null references users(id) on delete cascade,
   name text not null,
   slug text not null unique,
@@ -77,9 +70,9 @@ create table if not exists servers (
   created_at timestamp with time zone default now()
 );
 
--- Ensure server_pages table exists
+-- 8. Create server_pages table
 create table if not exists server_pages (
-  id uuid not null primary key default gen_random_uuid(),
+  id uuid not null primary key default uuid_generate_v4(),
   server_id uuid not null references servers(id) on delete cascade,
   slug text not null,
   title text not null,
@@ -89,9 +82,9 @@ create table if not exists server_pages (
   constraint server_pages_slug_unique unique(server_id, slug)
 );
 
--- Ensure links table exists
+-- 9. Create links table
 create table if not exists links (
-  id uuid not null primary key default gen_random_uuid(),
+  id uuid not null primary key default uuid_generate_v4(),
   user_id uuid not null references users(id) on delete cascade,
   title text not null,
   url text not null,
@@ -102,7 +95,16 @@ create table if not exists links (
   created_at timestamp with time zone default now()
 );
 
--- RPC for incrementing clicks
+-- 10. Create bots table (New)
+create table if not exists bots (
+  id uuid not null primary key default uuid_generate_v4(),
+  slug text not null unique,
+  invite_url text not null,
+  clicks bigint default 0,
+  created_at timestamp with time zone default now()
+);
+
+-- 11. RPCs
 create or replace function increment_clicks(link_id uuid)
 returns void as $$
 begin
@@ -112,7 +114,6 @@ begin
 end;
 $$ language plpgsql;
 
--- RPC for incrementing bot clicks
 create or replace function increment_bot_clicks(bot_slug text)
 returns void as $$
 begin

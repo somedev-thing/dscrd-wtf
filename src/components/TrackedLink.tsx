@@ -1,49 +1,19 @@
 'use client'
 
 import { trackClick } from "@/lib/actions"
+import { LinkSimple } from "@phosphor-icons/react"
 
-
-interface TrackedLinkProps {
-    link: {
-        id: string
-        url: string
-        title: string
-        icon?: string
-    }
-    theme: {
-        color: string
-        mode: string
-    }
-}
-
-export default function TrackedLink({ link, theme }: TrackedLinkProps) {
-  const handleClick = () => {
-      // Fire and forget
-      trackClick(link.id)
-  }
-
-  return (
-    <a 
-        href={link.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={handleClick}
-        className="group relative overflow-hidden rounded-xl p-4 transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-between"
-        style={{ 
-            backgroundColor: theme.mode === 'light' ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.05)',
-            border: '1px solid',
-            borderColor: theme.mode === 'light' ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)'
-        }}
-    >
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity" 
-                style={{ backgroundColor: theme.color }}></div>
-        
-        <div className="flex items-center gap-3 relative z-10 w-full">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/5 shrink-0">
-                <i className="lni lni-link-2-angular-right"></i>
-            </div>
-            <span className="font-medium truncate">{link.title}</span>
-        </div>
-    </a>
-  )
+export default function TrackedLink({ id, url, title, className, theme }: { id: string, url: string, title: string, className?: string, theme?: any }) {
+    return (
+        <a 
+            href={url} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            onClick={() => trackClick(id)}
+            className={`flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all group ${className}`}
+        >
+            <span className="font-bold text-gray-200 group-hover:text-white transition-colors">{title}</span>
+            <LinkSimple size={18} className="text-gray-500 group-hover:text-white transition-colors" />
+        </a>
+    )
 }

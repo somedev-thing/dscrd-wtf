@@ -1,5 +1,6 @@
 
 import Link from 'next/link'
+import { User, Palette, ShareNetwork, ArrowRight } from '@phosphor-icons/react/dist/ssr'
 
 export default function HowItWorks() {
   return (
@@ -13,7 +14,7 @@ export default function HowItWorks() {
         {/* Step 1 */}
         <div className="relative flex flex-col md:flex-row gap-8 items-start">
           <div className="hidden md:flex w-16 h-16 rounded-full bg-card border border-electric items-center justify-center z-10 shrink-0">
-             <i className="lni lni-user-4 text-electric text-xl"></i>
+             <User size={24} weight="fill" className="text-electric" />
           </div>
           <div className="bg-card border border-border p-8 rounded-[2rem] flex-1">
              <h2 className="text-2xl font-bold mb-4 text-white font-sans">1. Connect Discord</h2>
@@ -30,7 +31,7 @@ export default function HowItWorks() {
         {/* Step 2 */}
         <div className="relative flex flex-col md:flex-row gap-8 items-start">
           <div className="hidden md:flex w-16 h-16 rounded-full bg-card border border-electric items-center justify-center z-10 shrink-0">
-             <i className="lni lni-colour-palette-3 text-electric text-xl"></i>
+             <Palette size={24} weight="fill" className="text-electric" />
           </div>
           <div className="bg-card border border-border p-8 rounded-[2rem] flex-1">
              <h2 className="text-2xl font-bold mb-4 text-white font-sans">2. Customize Card</h2>
@@ -44,7 +45,7 @@ export default function HowItWorks() {
         {/* Step 3 */}
         <div className="relative flex flex-col md:flex-row gap-8 items-start">
            <div className="hidden md:flex w-16 h-16 rounded-full bg-card border border-electric items-center justify-center z-10 shrink-0">
-             <i className="lni lni-share-1 text-electric text-xl"></i>
+             <ShareNetwork size={24} weight="fill" className="text-electric" />
           </div>
           <div className="bg-card border border-border p-8 rounded-[2rem] flex-1">
              <h2 className="text-2xl font-bold mb-4 text-white font-sans">3. Share Everywhere</h2>
@@ -53,7 +54,7 @@ export default function HowItWorks() {
                Paste it in Discord chat, and it renders a beautiful dynamic embed.
              </p>
              <Link href="/" className="inline-flex items-center gap-2 text-electric hover:text-white transition-colors font-bold">
-               Get Started <i className="lni lni-arrow-right"></i>
+               Get Started <ArrowRight size={16} weight="bold" />
              </Link>
           </div>
         </div>

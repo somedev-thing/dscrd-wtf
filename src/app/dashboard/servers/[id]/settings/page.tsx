@@ -1,5 +1,7 @@
 import { supabase } from "@/lib/supabase"
 import { deleteServer } from "@/lib/actions"
+import { ShieldWarning, Trash } from "@phosphor-icons/react/dist/ssr"
+
 
 export default async function ServerSettingsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -28,14 +30,14 @@ export default async function ServerSettingsPage({ params }: { params: Promise<{
 
         <div className="bg-red-500/5 border border-red-500/20 p-6 rounded-2xl">
             <h3 className="text-lg font-bold text-red-500 mb-2 flex items-center gap-2">
-                <i className="lni lni-shield-2 text-xl"></i> Danger Zone
+                <ShieldWarning size={24} weight="duotone" /> Danger Zone
             </h3>
             <p className="text-gray-400 text-sm mb-6">Deleting a server is irreversible. All pages and data will be lost.</p>
             
             <form action={deleteServer}>
                 <input type="hidden" name="id" value={id} />
                 <button type="submit" className="bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/50 px-6 py-2 rounded-lg font-bold transition-all flex items-center gap-2">
-                    <i className="lni lni-trash-3"></i> Delete Server
+                    <Trash size={18} weight="bold" /> Delete Server
                 </button>
             </form>
         </div>
