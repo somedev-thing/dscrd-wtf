@@ -1,32 +1,25 @@
-'use client';
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { DashboardShell } from "@/components/dashboard/shell";
+import { ThemeProvider } from "@/components/theme-provider";
 
-import { useState } from 'react';
-import { Sidebar, MobileSidebar } from '@/components/layout/Sidebar';
-import { TopBar } from '@/components/layout/TopBar';
-
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const session = await getServerSession(authOptions);
 
   return (
-    <div className="min-h-screen bg-surface-bg flex">
-      {/* Sidebar */}
-      <Sidebar />
-      <MobileSidebar 
-        isOpen={isMobileMenuOpen} 
-        onClose={() => setIsMobileMenuOpen(false)} 
-      />
-
-      {/* Main content */}
-      <div className="flex-1 lg:ml-[260px] min-w-0">
-        <TopBar onMenuOpen={() => setIsMobileMenuOpen(true)} />
-        <main className="p-4 md:p-6 lg:p-8 max-w-[1200px] mx-auto">
-          {children}
-        </main>
-      </div>
-    </div>
+    <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+    >
+        <DashboardShell session={session}>
+            {children}
+        </DashboardShell>
+    </ThemeProvider>
   );
 }

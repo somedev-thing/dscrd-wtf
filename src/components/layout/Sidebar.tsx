@@ -40,13 +40,13 @@ function NavLink({ item, isActive }: { item: NavItem; isActive: boolean }) {
     <NextLink
       href={item.href}
       className={cn(
-        "w-full px-3 py-2.5 rounded-lg flex items-center gap-3 text-sm transition-all duration-200",
+        "w-full px-4 py-3 rounded-xl flex items-center gap-3 text-sm transition-all duration-200 border border-transparent font-medium",
         isActive
-          ? "bg-electric-glow text-electric font-semibold"
-          : "text-zinc-400 hover:bg-surface-hover hover:text-white font-normal"
+          ? "bg-electric text-white shadow-lg shadow-electric/25"
+          : "text-zinc-400 hover:bg-white/5 hover:text-white"
       )}
     >
-      <item.icon className="w-4 h-4" />
+      <item.icon className={cn("w-5 h-5", isActive ? "text-white" : "text-zinc-500 group-hover:text-white")} />
       <span>{item.label}</span>
     </NextLink>
   );
@@ -57,20 +57,23 @@ function SidebarContent() {
   const { data: session } = useSession();
 
   return (
-    <div className="flex flex-col h-full py-4 px-3">
+    <div className="flex flex-col h-full bg-[#050507] py-6 px-4">
       {/* Logo */}
-      <div className="flex items-center gap-2 px-3 py-2 mb-6">
-        <div className="p-1.5 rounded-lg bg-electric-glow flex items-center justify-center">
-          <Zap className="w-4 h-4 text-electric" />
+      <div className="flex items-center gap-3 px-2 mb-10">
+        <div className="w-10 h-10 rounded-xl bg-electric flex items-center justify-center shadow-lg shadow-electric/20">
+          <Zap className="w-6 h-6 text-white" fill="currentColor" />
         </div>
-        <div className="text-lg font-extrabold tracking-tight">
-          dscrd
-          <span className="text-electric">.wtf</span>
+        <div className="flex flex-col">
+          <span className="text-xl font-jua text-white leading-none">dscrd</span>
+          <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Workspace</span>
         </div>
       </div>
 
       {/* Navigation */}
-      <div className="flex flex-col gap-1 flex-1">
+      <div className="flex flex-col gap-2 flex-1">
+        <div className="px-2 mb-2">
+            <span className="text-xs font-bold text-zinc-600 uppercase tracking-wider">Menu</span>
+        </div>
         {navItems.map((item) => (
           <NavLink
             key={item.href}
@@ -84,43 +87,30 @@ function SidebarContent() {
         ))}
       </div>
 
-      <div className="h-px bg-surface-border mb-3" />
-
-      {/* User miniprofile + fuel */}
-      <div className="px-1">
-        <div className="flex items-center gap-3 mb-3">
+      {/* User Footer */}
+      <div className="mt-auto pt-6 border-t border-white/5">
+        <div className="flex items-center gap-3 mb-4 px-2 group cursor-pointer hover:opacity-80 transition-opacity">
           <img
-            className="w-8 h-8 rounded-full border-2 border-surface-border"
+            className="w-10 h-10 rounded-xl border border-white/10 shadow-sm"
             src={session?.user?.image || ''}
             alt={session?.user?.name || 'User'}
           />
           <div className="flex-1 min-w-0">
-            <div className="text-sm font-semibold truncate">
+            <div className="text-sm font-bold text-white truncate font-heading">
               {session?.user?.name || 'User'}
             </div>
-            <div className="text-xs text-zinc-500 truncate">
+            <div className="text-[10px] text-zinc-500 truncate font-mono">
               {(session?.user as Record<string, unknown>)?.tier === 'verified'
-                ? '✓ Verified'
-                : 'Lurker'}
+                ? 'VERIFIED'
+                : 'FREE PLAN'}
             </div>
-          </div>
-        </div>
-
-        {/* Fuel Level */}
-        <div className="mb-3">
-          <div className="flex justify-between mb-1">
-            <span className="text-xs text-zinc-500">Fuel</span>
-            <span className="text-xs text-zinc-500">69%</span>
-          </div>
-          <div className="w-full h-1 bg-surface-border rounded-full overflow-hidden">
-            <div className="h-full bg-electric w-[69%]" />
           </div>
         </div>
 
         {/* Sign out */}
         <button
           onClick={() => signOut({ callbackUrl: '/' })}
-          className="w-full px-3 py-2 rounded-lg flex items-center gap-3 text-zinc-500 text-sm transition-all duration-200 hover:bg-surface-hover hover:text-red-500"
+          className="w-full px-4 py-3 rounded-xl flex items-center gap-3 text-zinc-500 text-sm font-medium transition-all duration-200 hover:bg-red-500/10 hover:text-red-500 border border-transparent hover:border-red-500/20"
         >
           <LogOut className="w-4 h-4" />
           <span>Sign Out</span>

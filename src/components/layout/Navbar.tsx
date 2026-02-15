@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Zap } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { clsx } from 'clsx';
 import { useSession } from 'next-auth/react';
@@ -24,43 +24,44 @@ export function Navbar() {
   }, [pathname]);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-void/90 backdrop-blur-sm border-b border-surface-border">
-      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+    <nav className="fixed top-6 left-0 right-0 z-50 px-6">
+      <div className="max-w-5xl mx-auto h-16 px-6 bg-[#09090b]/80 backdrop-blur-md border border-white/10 rounded-2xl flex items-center justify-between shadow-2xl shadow-black/50">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group">
-           <img 
-             src="/dscrd-logo-icon.png" 
-             alt="dscrd" 
-             className="w-8 h-8 rounded-lg" 
-           />
-           <span className="font-jua text-2xl text-white tracking-wide group-hover:text-electric transition-colors">
-             dscrd<span className="text-electric">.wtf</span>
+           <div className="w-8 h-8 rounded-lg bg-electric flex items-center justify-center text-white shadow-lg shadow-electric/20 group-hover:scale-105 transition-transform">
+             <Zap className="w-5 h-5" fill="currentColor" />
+           </div>
+           <span className="font-jua text-xl text-white tracking-wide group-hover:text-electric transition-colors">
+             dscrd<span className="text-zinc-600">.wtf</span>
            </span>
         </Link>
 
         {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-1">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-zinc-400 hover:text-white font-heading font-medium transition-colors text-sm uppercase tracking-widest"
+              className="px-4 py-2 text-zinc-400 hover:text-white font-heading font-medium transition-all text-sm uppercase tracking-wider hover:bg-white/5 rounded-lg"
             >
               {link.label}
             </Link>
           ))}
+        </div>
           
+        <div className="hidden md:flex items-center gap-4">
+          <div className="h-6 w-px bg-white/10" />
           {session ? (
             <Link
               href="/dashboard"
-              className="px-6 py-2 bg-surface-elevated hover:bg-electric hover:text-white border border-surface-border hover:border-electric text-white rounded font-jua uppercase tracking-wide transition-all"
+              className="px-5 py-2 bg-white text-black hover:bg-zinc-200 rounded-lg font-bold font-heading uppercase tracking-wide transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
             >
               Dashboard
             </Link>
           ) : (
              <Link
               href="/login"
-              className="px-6 py-2 bg-electric hover:bg-electric-hover text-white rounded font-jua uppercase tracking-wide transition-all"
+              className="px-5 py-2 bg-electric hover:bg-electric-hover text-white rounded-lg font-bold font-heading uppercase tracking-wide transition-all shadow-lg shadow-electric/20 hover:shadow-electric/40 hover:-translate-y-0.5"
             >
               Login
             </Link>
@@ -78,19 +79,21 @@ export function Navbar() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-void border-b border-surface-border p-6 flex flex-col gap-4">
+        <div className="absolute top-20 left-6 right-6 bg-[#09090b] border border-white/10 rounded-2xl p-4 flex flex-col gap-2 shadow-2xl z-50">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-lg text-zinc-400 hover:text-white font-jua uppercase"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-4 py-3 text-lg text-zinc-400 hover:text-white hover:bg-white/5 rounded-xl font-jua uppercase transition-colors"
               >
                 {link.label}
               </Link>
             ))}
+            <div className="h-px bg-white/10 my-2" />
             <Link
-              href="/login"
-              className="w-full text-center py-3 bg-electric text-white rounded font-jua uppercase"
+              href={session ? "/dashboard" : "/login"}
+              className="w-full text-center py-3 bg-electric text-white rounded-xl font-jua uppercase shadow-lg shadow-electric/20"
             >
               {session ? 'Dashboard' : 'Log In'}
             </Link>

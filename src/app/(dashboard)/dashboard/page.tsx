@@ -1,8 +1,10 @@
 'use client';
 
-import { MousePointerClick, Link2, Eye, Zap } from 'lucide-react';
+import { MousePointerClick, Link2, Eye, Zap, ArrowRight } from 'lucide-react';
 import { useSession } from 'next-auth/react';
-import { StatCard } from '@/components/cards/StatCard';
+import { StatCard } from '@/components/dashboard/stat-card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import Link from 'next/link';
 
 export default function DashboardPage() {
@@ -10,73 +12,76 @@ export default function DashboardPage() {
   const userName = session?.user?.name || 'there';
 
   return (
-    <div className="flex flex-col gap-8">
-      {/* Welcome Header */}
-      <div>
-        <h1 className="text-2xl font-extrabold mb-1 tracking-tight">
-          Welcome back, {userName}
-          <span className="ml-2">⚡</span>
-        </h1>
-        <p className="text-sm text-zinc-500">
-          Here&apos;s what&apos;s happening with your identity layer.
-        </p>
+    <div className="flex flex-col gap-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <StatCard
-          label="Total Clicks"
-          value={1247}
+          title="Total Clicks"
+          value="1,247"
           icon={MousePointerClick}
-          trend={{ value: 12, isPositive: true }}
+          description="+12% from last month"
         />
         <StatCard
-          label="Active Links"
-          value={8}
+          title="Active Links"
+          value="8"
           icon={Link2}
+          description="3 links pending"
         />
         <StatCard
-          label="Profile Views"
-          value={420}
+          title="Profile Views"
+          value="420"
           icon={Eye}
-          trend={{ value: 5, isPositive: true }}
+          description="+5% from last month"
+        />
+        <StatCard
+          title="Engagement"
+          value="+12.5%"
+          icon={Zap}
+          description="+2.1% from last month"
         />
       </div>
 
-      {/* Quick Actions */}
-      <div>
-        <h2 className="text-lg font-bold mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Link
-            href="/dashboard/identity"
-            className="group block bg-surface-card border border-surface-border rounded-xl transition-all duration-200 hover:border-electric hover:bg-surface-hover hover:-translate-y-0.5"
-          >
-            <div className="p-5 flex items-start gap-3">
-              <div className="p-2 rounded-lg bg-electric-glow group-hover:bg-electric/20 transition-colors">
-                <Zap size={18} className="text-electric" />
-              </div>
-              <div>
-                <p className="font-semibold text-sm mb-0.5">Edit Your Profile</p>
-                <p className="text-xs text-zinc-500">Customize your public identity</p>
-              </div>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+        <Card className="col-span-4">
+          <CardHeader>
+            <CardTitle>Recent Activity</CardTitle>
+            <CardDescription>
+              You have 3 new notifications from your servers.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {/* Placeholder for activity graph or list */}
+            <div className="h-[200px] flex items-center justify-center border rounded-md border-dashed text-muted-foreground">
+               Activity Graph Placeholder
             </div>
-          </Link>
-
-          <Link
-            href="/dashboard/links"
-            className="group block bg-surface-card border border-surface-border rounded-xl transition-all duration-200 hover:border-electric hover:bg-surface-hover hover:-translate-y-0.5"
-          >
-             <div className="p-5 flex items-start gap-3">
-              <div className="p-2 rounded-lg bg-electric-glow group-hover:bg-electric/20 transition-colors">
-                <Link2 size={18} className="text-electric" />
-              </div>
-              <div>
-                <p className="font-semibold text-sm mb-0.5">Create a New Link</p>
-                <p className="text-xs text-zinc-500">Add a redirect, bot, or server link</p>
-              </div>
-            </div>
-          </Link>
-        </div>
+          </CardContent>
+        </Card>
+        
+        <Card className="col-span-3">
+          <CardHeader>
+            <CardTitle>Quick Actions</CardTitle>
+             <CardDescription>
+              Manage your identity and links.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-4">
+             <Button asChild className="w-full justify-between" variant="secondary">
+                <Link href="/dashboard/identity">
+                   <span className="flex items-center gap-2"><Zap className="w-4 h-4" /> Edit Profile</span>
+                   <ArrowRight className="w-4 h-4" />
+                </Link>
+             </Button>
+             <Button asChild className="w-full justify-between" variant="outline">
+                <Link href="/dashboard/links">
+                   <span className="flex items-center gap-2"><Link2 className="w-4 h-4" /> Create Link</span>
+                    <ArrowRight className="w-4 h-4" />
+                </Link>
+             </Button>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

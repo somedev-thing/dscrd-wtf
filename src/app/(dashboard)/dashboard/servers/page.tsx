@@ -1,11 +1,22 @@
+import { Card, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Server } from "lucide-react"
+
 export default function ServersPage() {
   return (
     <div className="flex flex-col items-center justify-center min-h-[400px] text-center">
-      <h1 className="text-2xl font-bold mb-2">Server Management</h1>
-      <p className="text-zinc-500 mb-6">Manage your discord server landing pages here.</p>
-      <div className="px-3 py-1 bg-electric/10 text-electric rounded-full text-xs font-semibold uppercase tracking-wider">
-        Coming Soon
-      </div>
+       <Card className="w-full max-w-md border-dashed">
+        <CardContent className="flex flex-col items-center gap-4 p-10">
+            <div className="p-3 bg-muted rounded-full">
+                <Server className="h-8 w-8 text-muted-foreground" />
+            </div>
+            <div>
+                 <h1 className="text-2xl font-bold mb-2">Server Management</h1>
+                 <p className="text-muted-foreground mb-4">Manage your discord server landing pages here.</p>
+                <Badge variant="secondary">Coming Soon</Badge>
+            </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

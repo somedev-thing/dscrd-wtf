@@ -2,39 +2,45 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #09090b;
-  --foreground: #ededed;
-}
+@layer base {
+  :root {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
 
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #09090b;
-}
-::-webkit-scrollbar-thumb {
-  background: #27272a;
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
-}
-
-/* Selection */
-::selection {
-  background: rgba(0, 114, 255, 0.3);
-  color: white;
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+    --card: 240 10% 4.5%;
+    --card-foreground: 0 0% 98%;
+ 
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+ 
+    --primary: 217 100% 50%; /* Electric Blue #0072ff */
+    --primary-foreground: 0 0% 100%;
+ 
+    --secondary: 240 4% 16%;
+    --secondary-foreground: 0 0% 98%;
+ 
+    --muted: 240 4% 16%;
+    --muted-foreground: 240 5% 64.9%;
+ 
+    --accent: 240 4% 16%;
+    --accent-foreground: 0 0% 98%;
+ 
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+ 
+    --border: 240 4% 16%;
+    --input: 240 4% 16%;
+    --ring: 240 4.9% 83.9%;
+ 
+    --radius: 0.75rem;
   }
-
-  .glass-card {
-    @apply bg-surface-card border border-surface-border backdrop-blur-md;
+}
+ 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }
