@@ -1,27 +1,43 @@
-import Link from 'next/link'
+import Link from "next/link"
+import { Home01Icon, Search01Icon } from "hugeicons-react"
 
 export default function NotFound() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center text-center px-6 relative overflow-hidden">
-       {/* Background Glitch Elements */}
-       <div className="absolute inset-0 bg-void">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-electric/20 blur-[100px] animate-pulse rounded-full"></div>
-       </div>
+    <div className="min-h-screen bg-[#050508] flex items-center justify-center p-4">
+      <div className="max-w-md w-full text-center space-y-8">
+        
+        {/* glitched 404 */}
+        <div className="relative">
+            <h1 className="text-[120px] font-black text-[#111] leading-none select-none">404</h1>
+            <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-4xl font-bold text-electric bg-black/50 backdrop-blur-sm px-4 py-2 rounded-xl border border-electric/20">
+                    Lost in Void
+                </span>
+            </div>
+        </div>
 
-       <div className="relative z-10">
-         <h1 className="text-[10rem] font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-transparent leading-none select-none font-sans">
-           404
-         </h1>
-         <div className="text-2xl md:text-4xl font-bold text-white mb-8 font-sans">
-           Lost in the <span className="text-electric">Void</span>.
-         </div>
-         <p className="text-gray-400 mb-12 max-w-md mx-auto font-body">
-           The page you are looking for has been consumed by the singularity. Or maybe you just typed it wrong.
-         </p>
-         <Link href="/" className="px-8 py-4 rounded-full bg-white text-black font-bold hover:bg-electric hover:text-white transition-all transform hover:scale-105 font-mono">
-           Return to Safety
-         </Link>
-       </div>
-    </main>
+        <div className="space-y-4">
+            <h2 className="text-2xl font-bold text-white">Page Not Found</h2>
+            <p className="text-gray-400 max-w-xs mx-auto">
+                The identified object could not be resolved in this sector.
+            </p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+            <Link href="/" className="glass-card p-4 rounded-2xl hover:bg-white/5 transition-all group flex flex-col items-center gap-2">
+                <Home01Icon size={24} className="text-gray-500 group-hover:text-white transition-colors" />
+                <span className="text-sm font-bold text-gray-400 group-hover:text-white">Return Home</span>
+            </Link>
+            <Link href="/dashboard" className="glass-card p-4 rounded-2xl hover:bg-white/5 transition-all group flex flex-col items-center gap-2">
+                <Search01Icon size={24} className="text-gray-500 group-hover:text-white transition-colors" />
+                <span className="text-sm font-bold text-gray-400 group-hover:text-white">Dashboard</span>
+            </Link>
+        </div>
+
+        <div className="text-xs text-gray-600 font-mono">
+            Error Code: 404_NOT_FOUND
+        </div>
+      </div>
+    </div>
   )
 }

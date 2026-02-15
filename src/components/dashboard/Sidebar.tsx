@@ -18,11 +18,11 @@ import { useState } from "react"
 
 const NAV_ITEMS = [
     { label: "Overview", href: "/dashboard", icon: DashboardSquare01Icon },
-    { label: "Identity", href: "/dashboard/identity", icon: UserCircleIcon },
-    { label: "Redirects", href: "/dashboard/redirects", icon: LinkSquare01Icon },
+    { label: "Profile", href: "/dashboard/identity", icon: UserCircleIcon },
     { label: "Servers", href: "/dashboard/servers", icon: ServerStack02Icon },
+    // { label: "Redirects", href: "/dashboard/redirects", icon: LinkSquare01Icon },
     { label: "Settings", href: "/dashboard/settings", icon: Settings02Icon },
-    { label: "Billing", href: "/dashboard/billing", icon: CreditCardIcon },
+    // { label: "Billing", href: "/dashboard/billing", icon: CreditCardIcon },
 ]
 
 export function Sidebar({ user }: { user: any }) {

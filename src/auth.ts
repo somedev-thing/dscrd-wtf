@@ -24,6 +24,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.username = token.username
         // @ts-ignore
         session.user.accessToken = token.accessToken
+        // @ts-ignore
+        session.user.banner = token.banner
+        // @ts-ignore
+        session.user.accent_color = token.accent_color
       }
       return session
     },
@@ -32,6 +36,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.flags = profile.flags
         token.username = profile.username
         token.premium_type = profile.premium_type
+        // @ts-ignore
+        token.banner = profile.banner
+        // @ts-ignore
+        token.accent_color = profile.accent_color
       }
       if (account) {
         token.accessToken = account.access_token
