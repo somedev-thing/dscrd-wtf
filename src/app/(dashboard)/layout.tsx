@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, useDisclosure } from '@chakra-ui/react';
+import { useState } from 'react';
 import { Sidebar, MobileSidebar } from '@/components/layout/Sidebar';
 import { TopBar } from '@/components/layout/TopBar';
 
@@ -9,26 +9,24 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <Box minH="100vh" bg="surface.bg">
+    <div className="min-h-screen bg-surface-bg flex">
       {/* Sidebar */}
       <Sidebar />
-      <MobileSidebar isOpen={isOpen} onClose={onClose} />
+      <MobileSidebar 
+        isOpen={isMobileMenuOpen} 
+        onClose={() => setIsMobileMenuOpen(false)} 
+      />
 
       {/* Main content */}
-      <Box ml={{ base: 0, lg: '260px' }}>
-        <TopBar onMenuOpen={onOpen} />
-        <Box
-          as="main"
-          p={{ base: 4, md: 6, lg: 8 }}
-          maxW="1200px"
-          mx="auto"
-        >
+      <div className="flex-1 lg:ml-[260px] min-w-0">
+        <TopBar onMenuOpen={() => setIsMobileMenuOpen(true)} />
+        <main className="p-4 md:p-6 lg:p-8 max-w-[1200px] mx-auto">
           {children}
-        </Box>
-      </Box>
-    </Box>
+        </main>
+      </div>
+    </div>
   );
 }

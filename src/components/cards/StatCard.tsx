@@ -1,15 +1,6 @@
 'use client';
 
-import {
-  Box,
-  Card,
-  CardBody,
-  HStack,
-  VStack,
-  Icon,
-  Text,
-} from '@chakra-ui/react';
-import type { LucideIcon } from 'lucide-react';
+import { LucideIcon } from 'lucide-react';
 
 interface StatCardProps {
   label: string;
@@ -21,48 +12,29 @@ interface StatCardProps {
   };
 }
 
-export function StatCard({ label, value, icon, trend }: StatCardProps) {
+export function StatCard({ label, value, icon: Icon, trend }: StatCardProps) {
   return (
-    <Card
-      bg="surface.card"
-      border="1px solid"
-      borderColor="surface.border"
-      borderRadius="xl"
-      transition="all 0.2s"
-      _hover={{
-        borderColor: '#3f3f46',
-        transform: 'translateY(-2px)',
-        boxShadow: '0 8px 30px rgba(0, 0, 0, 0.3)',
-      }}
-    >
-      <CardBody p={5}>
-        <HStack justify="space-between" align="start">
-          <VStack align="start" spacing={1}>
-            <Text fontSize="xs" color="#71717a" fontWeight="500" textTransform="uppercase" letterSpacing="wider">
+    <div className="bg-surface-card border border-surface-border rounded-xl transition-all duration-200 hover:border-zinc-700 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/30">
+      <div className="p-5">
+        <div className="flex justify-between items-start">
+          <div className="flex flex-col gap-1">
+            <p className="text-xs text-zinc-500 font-medium uppercase tracking-wider">
               {label}
-            </Text>
-            <Text fontSize="2xl" fontWeight="700" color="white">
+            </p>
+            <p className="text-2xl font-bold text-white">
               {typeof value === 'number' ? value.toLocaleString() : value}
-            </Text>
+            </p>
             {trend && (
-              <Text
-                fontSize="xs"
-                color={trend.isPositive ? '#22c55e' : '#ef4444'}
-                fontWeight="500"
-              >
+              <p className={`text-xs font-medium ${trend.isPositive ? 'text-green-500' : 'text-red-500'}`}>
                 {trend.isPositive ? '↑' : '↓'} {Math.abs(trend.value)}%
-              </Text>
+              </p>
             )}
-          </VStack>
-          <Box
-            p={2.5}
-            borderRadius="lg"
-            bg="accent.blueGlow"
-          >
-            <Icon as={icon} boxSize={5} color="accent.blue" />
-          </Box>
-        </HStack>
-      </CardBody>
-    </Card>
+          </div>
+          <div className="p-2.5 rounded-lg bg-electric-glow">
+            <Icon className="w-5 h-5 text-electric" />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

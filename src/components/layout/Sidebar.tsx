@@ -1,24 +1,6 @@
 'use client';
 
 import {
-  Box,
-  VStack,
-  HStack,
-  Text,
-  Icon,
-  Flex,
-  Avatar,
-  Tooltip,
-  useDisclosure,
-  Drawer,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  DrawerBody,
-  Progress,
-  Divider,
-} from '@chakra-ui/react';
-import {
   Home,
   User,
   Link2,
@@ -26,11 +8,14 @@ import {
   Settings,
   Zap,
   LogOut,
+  X,
 } from 'lucide-react';
 import NextLink from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
 import type { LucideIcon } from 'lucide-react';
+import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 interface NavItem {
   label: string;
@@ -46,31 +31,24 @@ const navItems: NavItem[] = [
   { label: 'Settings', icon: Settings, href: '/dashboard/settings' },
 ];
 
+function cn(...inputs: (string | undefined | null | false)[]) {
+  return twMerge(clsx(inputs));
+}
+
 function NavLink({ item, isActive }: { item: NavItem; isActive: boolean }) {
   return (
-    <Box
-      as={NextLink}
+    <NextLink
       href={item.href}
-      w="full"
-      px={3}
-      py={2.5}
-      borderRadius="lg"
-      display="flex"
-      alignItems="center"
-      gap={3}
-      bg={isActive ? 'accent.blueGlow' : 'transparent'}
-      color={isActive ? 'accent.blue' : '#a1a1aa'}
-      fontWeight={isActive ? '600' : '400'}
-      fontSize="sm"
-      transition="all 0.2s"
-      _hover={{
-        bg: isActive ? 'accent.blueGlow' : 'surface.hover',
-        color: isActive ? 'accent.blue' : 'white',
-      }}
+      className={cn(
+        "w-full px-3 py-2.5 rounded-lg flex items-center gap-3 text-sm transition-all duration-200",
+        isActive
+          ? "bg-electric-glow text-electric font-semibold"
+          : "text-zinc-400 hover:bg-surface-hover hover:text-white font-normal"
+      )}
     >
-      <Icon as={item.icon} boxSize={4} />
-      <Text>{item.label}</Text>
-    </Box>
+      <item.icon className="w-4 h-4" />
+      <span>{item.label}</span>
+    </NextLink>
   );
 }
 
@@ -79,29 +57,20 @@ function SidebarContent() {
   const { data: session } = useSession();
 
   return (
-    <Flex direction="column" h="full" py={4} px={3}>
+    <div className="flex flex-col h-full py-4 px-3">
       {/* Logo */}
-      <HStack px={3} py={2} mb={6} spacing={2}>
-        <Box
-          p={1.5}
-          borderRadius="lg"
-          bg="accent.blueGlow"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Icon as={Zap} boxSize={4} color="accent.blue" />
-        </Box>
-        <Text fontSize="lg" fontWeight="800" letterSpacing="-0.02em">
+      <div className="flex items-center gap-2 px-3 py-2 mb-6">
+        <div className="p-1.5 rounded-lg bg-electric-glow flex items-center justify-center">
+          <Zap className="w-4 h-4 text-electric" />
+        </div>
+        <div className="text-lg font-extrabold tracking-tight">
           dscrd
-          <Text as="span" color="accent.blue">
-            .wtf
-          </Text>
-        </Text>
-      </HStack>
+          <span className="text-electric">.wtf</span>
+        </div>
+      </div>
 
       {/* Navigation */}
-      <VStack spacing={1} align="stretch" flex={1}>
+      <div className="flex flex-col gap-1 flex-1">
         {navItems.map((item) => (
           <NavLink
             key={item.href}
@@ -113,101 +82,59 @@ function SidebarContent() {
             }
           />
         ))}
-      </VStack>
+      </div>
 
-      <Divider borderColor="surface.border" mb={3} />
+      <div className="h-px bg-surface-border mb-3" />
 
       {/* User miniprofile + fuel */}
-      <Box px={1}>
-        <HStack spacing={3} mb={3}>
-          <Avatar
-            size="sm"
-            name={session?.user?.name || 'User'}
+      <div className="px-1">
+        <div className="flex items-center gap-3 mb-3">
+          <img
+            className="w-8 h-8 rounded-full border-2 border-surface-border"
             src={session?.user?.image || ''}
-            border="2px solid"
-            borderColor="surface.border"
+            alt={session?.user?.name || 'User'}
           />
-          <Box flex={1} minW={0}>
-            <Text fontSize="sm" fontWeight="600" isTruncated>
+          <div className="flex-1 min-w-0">
+            <div className="text-sm font-semibold truncate">
               {session?.user?.name || 'User'}
-            </Text>
-            <Text fontSize="xs" color="#52525b" isTruncated>
+            </div>
+            <div className="text-xs text-zinc-500 truncate">
               {(session?.user as Record<string, unknown>)?.tier === 'verified'
                 ? '✓ Verified'
                 : 'Lurker'}
-            </Text>
-          </Box>
-        </HStack>
+            </div>
+          </div>
+        </div>
 
         {/* Fuel Level */}
-        <Box mb={3}>
-          <HStack justify="space-between" mb={1}>
-            <Text fontSize="xs" color="#71717a">
-              Fuel
-            </Text>
-            <Text fontSize="xs" color="#71717a">
-              69%
-            </Text>
-          </HStack>
-          <Progress
-            value={69}
-            size="xs"
-            borderRadius="full"
-            bg="surface.border"
-            sx={{
-              '& > div': {
-                bg: 'accent.blue',
-              },
-            }}
-          />
-        </Box>
+        <div className="mb-3">
+          <div className="flex justify-between mb-1">
+            <span className="text-xs text-zinc-500">Fuel</span>
+            <span className="text-xs text-zinc-500">69%</span>
+          </div>
+          <div className="w-full h-1 bg-surface-border rounded-full overflow-hidden">
+            <div className="h-full bg-electric w-[69%]" />
+          </div>
+        </div>
 
         {/* Sign out */}
-        <Tooltip label="Sign Out" placement="right">
-          <Box
-            as="button"
-            onClick={() => signOut({ callbackUrl: '/' })}
-            w="full"
-            px={3}
-            py={2}
-            borderRadius="lg"
-            display="flex"
-            alignItems="center"
-            gap={3}
-            color="#52525b"
-            fontSize="sm"
-            transition="all 0.2s"
-            _hover={{
-              bg: 'surface.hover',
-              color: '#ef4444',
-            }}
-          >
-            <Icon as={LogOut} boxSize={4} />
-            <Text>Sign Out</Text>
-          </Box>
-        </Tooltip>
-      </Box>
-    </Flex>
+        <button
+          onClick={() => signOut({ callbackUrl: '/' })}
+          className="w-full px-3 py-2 rounded-lg flex items-center gap-3 text-zinc-500 text-sm transition-all duration-200 hover:bg-surface-hover hover:text-red-500"
+        >
+          <LogOut className="w-4 h-4" />
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </div>
   );
 }
 
 export function Sidebar() {
   return (
-    <Box
-      as="nav"
-      display={{ base: 'none', lg: 'flex' }}
-      w="260px"
-      minH="100vh"
-      borderRight="1px solid"
-      borderColor="surface.border"
-      bg="surface.bg"
-      position="fixed"
-      left={0}
-      top={0}
-      zIndex={20}
-    >
+    <nav className="hidden lg:flex w-[260px] min-h-screen border-r border-surface-border bg-surface-bg fixed left-0 top-0 z-20">
       <SidebarContent />
-    </Box>
+    </nav>
   );
 }
 
@@ -218,15 +145,25 @@ export function MobileSidebar({
   isOpen: boolean;
   onClose: () => void;
 }) {
+  if (!isOpen) return null;
+
   return (
-    <Drawer isOpen={isOpen} placement="left" onClose={onClose} size="xs">
-      <DrawerOverlay />
-      <DrawerContent bg="surface.bg" borderRight="1px solid" borderColor="surface.border">
-        <DrawerCloseButton color="#a1a1aa" />
-        <DrawerBody p={0}>
-          <SidebarContent />
-        </DrawerBody>
-      </DrawerContent>
-    </Drawer>
+    <div className="fixed inset-0 z-50 lg:hidden">
+      {/* Overlay */}
+      <div 
+        className="fixed inset-0 bg-black/70 backdrop-blur-sm"
+        onClick={onClose}
+      />
+      
+      {/* Drawer */}
+      <div className="fixed inset-y-0 left-0 w-64 bg-surface-bg border-r border-surface-border shadow-xl transform transition-transform duration-300">
+        <div className="absolute top-2 right-2">
+           <button onClick={onClose} className="p-2 text-zinc-400 hover:text-white">
+             <X size={20} />
+           </button>
+        </div>
+        <SidebarContent />
+      </div>
+    </div>
   );
 }

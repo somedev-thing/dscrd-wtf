@@ -1,40 +1,29 @@
 'use client';
 
-import {
-  Box,
-  Heading,
-  Text,
-  SimpleGrid,
-  VStack,
-  HStack,
-  Card,
-  CardBody,
-} from '@chakra-ui/react';
 import { MousePointerClick, Link2, Eye, Zap } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { StatCard } from '@/components/cards/StatCard';
+import Link from 'next/link';
 
 export default function DashboardPage() {
   const { data: session } = useSession();
   const userName = session?.user?.name || 'there';
 
   return (
-    <VStack align="stretch" spacing={8}>
+    <div className="flex flex-col gap-8">
       {/* Welcome Header */}
-      <Box>
-        <Heading size="lg" fontWeight="800" mb={1}>
+      <div>
+        <h1 className="text-2xl font-extrabold mb-1 tracking-tight">
           Welcome back, {userName}
-          <Text as="span" ml={2}>
-            ⚡
-          </Text>
-        </Heading>
-        <Text color="#71717a" fontSize="sm">
+          <span className="ml-2">⚡</span>
+        </h1>
+        <p className="text-sm text-zinc-500">
           Here&apos;s what&apos;s happening with your identity layer.
-        </Text>
-      </Box>
+        </p>
+      </div>
 
       {/* Stats Grid */}
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <StatCard
           label="Total Clicks"
           value={1247}
@@ -52,76 +41,43 @@ export default function DashboardPage() {
           icon={Eye}
           trend={{ value: 5, isPositive: true }}
         />
-      </SimpleGrid>
+      </div>
 
       {/* Quick Actions */}
-      <Box>
-        <Heading size="md" fontWeight="700" mb={4}>
-          Quick Actions
-        </Heading>
-        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
-          <Card
-            bg="surface.card"
-            border="1px solid"
-            borderColor="surface.border"
-            borderRadius="xl"
-            cursor="pointer"
-            transition="all 0.2s"
-            _hover={{
-              borderColor: 'accent.blue',
-              bg: 'surface.hover',
-            }}
-            as="a"
+      <div>
+        <h2 className="text-lg font-bold mb-4">Quick Actions</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Link
             href="/dashboard/identity"
+            className="group block bg-surface-card border border-surface-border rounded-xl transition-all duration-200 hover:border-electric hover:bg-surface-hover hover:-translate-y-0.5"
           >
-            <CardBody p={5}>
-              <HStack spacing={3}>
-                <Box p={2} borderRadius="lg" bg="accent.blueGlow">
-                  <Zap size={18} color="#0072ff" />
-                </Box>
-                <Box>
-                  <Text fontWeight="600" fontSize="sm">
-                    Edit Your Profile
-                  </Text>
-                  <Text fontSize="xs" color="#71717a">
-                    Customize your public identity
-                  </Text>
-                </Box>
-              </HStack>
-            </CardBody>
-          </Card>
-          <Card
-            bg="surface.card"
-            border="1px solid"
-            borderColor="surface.border"
-            borderRadius="xl"
-            cursor="pointer"
-            transition="all 0.2s"
-            _hover={{
-              borderColor: 'accent.blue',
-              bg: 'surface.hover',
-            }}
-            as="a"
+            <div className="p-5 flex items-start gap-3">
+              <div className="p-2 rounded-lg bg-electric-glow group-hover:bg-electric/20 transition-colors">
+                <Zap size={18} className="text-electric" />
+              </div>
+              <div>
+                <p className="font-semibold text-sm mb-0.5">Edit Your Profile</p>
+                <p className="text-xs text-zinc-500">Customize your public identity</p>
+              </div>
+            </div>
+          </Link>
+
+          <Link
             href="/dashboard/links"
+            className="group block bg-surface-card border border-surface-border rounded-xl transition-all duration-200 hover:border-electric hover:bg-surface-hover hover:-translate-y-0.5"
           >
-            <CardBody p={5}>
-              <HStack spacing={3}>
-                <Box p={2} borderRadius="lg" bg="accent.blueGlow">
-                  <Link2 size={18} color="#0072ff" />
-                </Box>
-                <Box>
-                  <Text fontWeight="600" fontSize="sm">
-                    Create a New Link
-                  </Text>
-                  <Text fontSize="xs" color="#71717a">
-                    Add a redirect, bot, or server link
-                  </Text>
-                </Box>
-              </HStack>
-            </CardBody>
-          </Card>
-        </SimpleGrid>
-      </Box>
-    </VStack>
+             <div className="p-5 flex items-start gap-3">
+              <div className="p-2 rounded-lg bg-electric-glow group-hover:bg-electric/20 transition-colors">
+                <Link2 size={18} className="text-electric" />
+              </div>
+              <div>
+                <p className="font-semibold text-sm mb-0.5">Create a New Link</p>
+                <p className="text-xs text-zinc-500">Add a redirect, bot, or server link</p>
+              </div>
+            </div>
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 }

@@ -1,17 +1,10 @@
 'use client';
 
 import {
-  Box,
-  HStack,
-  Text,
-  Icon,
-  Button,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  IconButton,
-} from '@chakra-ui/react';
-import { Menu, ExternalLink, ChevronRight } from 'lucide-react';
+  Menu,
+  ExternalLink,
+  ChevronRight,
+} from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import NextLink from 'next/link';
@@ -38,76 +31,57 @@ export function TopBar({ onMenuOpen }: TopBarProps) {
   const publicSlug = Array.isArray(userSlug) && userSlug.length > 0 ? userSlug[0] : null;
 
   return (
-    <Box
-      as="header"
-      w="full"
-      h="64px"
-      borderBottom="1px solid"
-      borderColor="surface.border"
-      bg="surface.bg"
-      display="flex"
-      alignItems="center"
-      px={{ base: 4, md: 6 }}
-      position="sticky"
-      top={0}
-      zIndex={10}
-      backdropFilter="blur(12px)"
-    >
-      <HStack w="full" justify="space-between">
-        <HStack spacing={4}>
+    <header className="w-full h-16 border-b border-surface-border bg-surface-bg/80 flex items-center px-4 md:px-6 sticky top-0 z-10 backdrop-blur-md">
+      <div className="w-full flex justify-between items-center">
+        <div className="flex items-center gap-4">
           {/* Mobile menu trigger */}
-          <IconButton
-            aria-label="Open menu"
-            icon={<Icon as={Menu} boxSize={5} />}
-            variant="ghost"
-            display={{ base: 'flex', lg: 'none' }}
+          <button
             onClick={onMenuOpen}
-            size="sm"
-          />
+            className="lg:hidden p-1 text-zinc-400 hover:text-white transition-colors"
+            aria-label="Open menu"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
 
           {/* Breadcrumbs */}
-          <Breadcrumb
-            separator={<Icon as={ChevronRight} boxSize={3} color="#52525b" />}
-            fontSize="sm"
-          >
-            {breadcrumbs.map((crumb, index) => (
-              <BreadcrumbItem
-                key={crumb.href}
-                isCurrentPage={index === breadcrumbs.length - 1}
-              >
-                <BreadcrumbLink
-                  as={NextLink}
-                  href={crumb.href}
-                  color={
-                    index === breadcrumbs.length - 1 ? 'white' : '#71717a'
-                  }
-                  fontWeight={
-                    index === breadcrumbs.length - 1 ? '600' : '400'
-                  }
-                  _hover={{ color: 'white' }}
-                >
-                  {crumb.label}
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-            ))}
-          </Breadcrumb>
-        </HStack>
+          <nav className="flex items-center text-sm">
+            <ol className="flex items-center">
+              {breadcrumbs.map((crumb, index) => {
+                const isLast = index === breadcrumbs.length - 1;
+                return (
+                  <li key={crumb.href} className="flex items-center">
+                    {index > 0 && (
+                      <ChevronRight className="w-3 h-3 text-zinc-500 mx-2" />
+                    )}
+                    <NextLink
+                      href={crumb.href}
+                      className={`
+                        transition-colors hover:text-white
+                        ${isLast ? 'text-white font-semibold' : 'text-zinc-500 font-normal'}
+                      `}
+                      aria-current={isLast ? 'page' : undefined}
+                    >
+                      {crumb.label}
+                    </NextLink>
+                  </li>
+                );
+              })}
+            </ol>
+          </nav>
+        </div>
 
         {/* View Public Page */}
         {publicSlug && (
-          <Button
-            as="a"
-            href={`/${publicSlug}`}
-            target="_blank"
-            size="sm"
-            variant="outline"
-            rightIcon={<Icon as={ExternalLink} boxSize={3.5} />}
-            fontSize="xs"
-          >
-            View Public Page
-          </Button>
+           <a
+             href={`/${publicSlug}`}
+             target="_blank"
+             className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg border border-surface-border text-zinc-400 text-xs font-medium hover:bg-surface-hover hover:text-white hover:border-zinc-700 transition-all"
+           >
+             View Public Page
+             <ExternalLink className="w-3.5 h-3.5" />
+           </a>
         )}
-      </HStack>
-    </Box>
+      </div>
+    </header>
   );
 }
