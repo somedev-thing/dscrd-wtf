@@ -59,7 +59,7 @@ const UserSchema = new Schema<IUser>(
 
 // Index for fast slug lookups
 UserSchema.index({ slugs: 1 });
-UserSchema.index({ email: 1 }, { unique: true });
+// UserSchema.index({ email: 1 }, { unique: true }); // Removed duplicate index
 
 const User = models.User || model<IUser>('User', UserSchema);
 export default User;
