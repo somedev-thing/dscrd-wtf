@@ -28,7 +28,20 @@ import {
   IconShieldCheck,
   IconCode,
   IconExternalLink,
-  IconRobot
+  IconRobot,
+  IconBrandGithub,
+  IconBrandTiktok,
+  IconBrandYoutube,
+  IconBrandInstagram,
+  IconBrandFacebook,
+  IconBrandTwitter,
+  IconBrandBluesky,
+  IconBrandReddit,
+  IconLayoutDashboardFilled,
+  IconStack2Filled,
+  IconCreditCardFilled,
+  IconSettingsFilled,
+  IconUserFilled
 } from '@tabler/icons-react';
 
 // Mappings to match usage in codebase
@@ -61,5 +74,22 @@ export const RobotFill = IconRobot;
 export const CloseCircleFill = IconX; // Re-export as CloseCircleFill if needed
 export const CheckCircleFill = IconCircleCheck; // Prefer CircleCheck
 export const MailFill = IconMail;
+// Social Brands
+export const GithubFill = IconBrandGithub;
+export const TiktokFill = IconBrandTiktok;
+export const YoutubeFill = IconBrandYoutube;
+export const InstagramFill = IconBrandInstagram;
+export const FacebookFill = IconBrandFacebook;
+export const TwitterFill = IconBrandTwitter;
+export const BlueskyFill = IconBrandBluesky;
+export const RedditFill = IconBrandReddit;
+
+// Filled Variants for Active States
+export const DashboardFilled = IconLayoutDashboardFilled;
+export const ServerFilled = IconStack2Filled;
+export const CreditCardFilled = IconCreditCardFilled;
+export const SettingsFilled = IconSettingsFilled;
+export const IdCardFilled = IconUserFilled;
+
 // Fallback for any others
 export const LightningFill = IconBolt;

@@ -15,8 +15,7 @@ import {
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-void text-white font-sans selection:bg-electric selection:text-white overflow-hidden">
-      <Navbar />
+    <div className="min-h-screen font-sans selection:bg-electric selection:text-white overflow-hidden">
       
       {/* Hero Section */}
       <section className="relative w-full min-h-screen flex items-center pt-32 pb-20 px-6">
@@ -90,32 +89,80 @@ export default function LandingPage() {
                 transition={{ delay: 0.4, type: "spring", stiffness: 50 }}
                 className="relative hidden lg:block perspective-1000"
             >
-                <div className="relative bg-black/40 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 shadow-2xl skew-y-1 hover:skew-y-0 transition-transform duration-700 group">
-                    <div className="absolute inset-0 bg-gradient-to-br from-electric/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[2.5rem]" />
+                <div className="relative w-[340px] mx-auto aspect-[4/5] rounded-[2.5rem] bg-[#09090b] overflow-hidden shadow-2xl border border-white/10 skew-y-1 hover:skew-y-0 transition-all duration-700 hover:shadow-[0_0_80px_-20px_rgba(121,40,202,0.5)] group">
                     
-                    {/* Mock Profile */}
-                    <div className="flex flex-col items-center text-center pt-8 pb-12 relative z-10">
-                        <div className="w-32 h-32 rounded-full border-4 border-white/5 bg-zinc-900 mb-6 relative shadow-lg shadow-black/50">
-                            <img 
-                                src="https://api.dicebear.com/7.x/avataaars/svg?seed=Phantom" 
-                                alt="Demo"
-                                className="w-full h-full rounded-full"
-                            />
-                            <div className="absolute bottom-1 right-1 w-7 h-7 bg-green-500 rounded-full border-4 border-black" />
-                        </div>
-                        <h3 className="text-3xl font-heading text-white mb-1">Phantom</h3>
-                        <p className="font-mono text-electric mb-8">@phantom_dev</p> 
+                    {/* Glass Overlay Texture */}
+                    <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+                    
+                    {/* Ambient Glow */}
+                     <div className="absolute -top-20 -right-20 w-60 h-60 bg-electric/30 blur-[60px] rounded-full pointer-events-none group-hover:bg-electric/50 transition-colors" />
+
+                    {/* Banner Image */}
+                    <div className="h-1/3 w-full relative overflow-hidden">
+                        <div className="w-full h-full bg-gradient-to-r from-electric to-purple-900" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50" />
+                    </div>
+
+                    {/* Content Container */}
+                    <div className="absolute inset-0 flex flex-col justify-end p-8 pt-0">
                         
-                        <div className="w-full max-w-xs space-y-3">
-                            <div className="p-4 rounded-xl bg-white/5 border border-white/5 flex items-center justify-between hover:bg-white/10 transition cursor-pointer group/item">
-                                <span className="font-heading text-zinc-400 group-hover/item:text-white transition-colors">GitHub</span>
-                                <ExternalLink className="w-4 h-4 text-zinc-500 group-hover/item:text-electric transition-colors" />
-                            </div>
-                            <div className="p-4 rounded-xl bg-white/5 border border-white/5 flex items-center justify-between hover:bg-white/10 transition cursor-pointer group/item">
-                                <span className="font-heading text-zinc-400 group-hover/item:text-white transition-colors">Server</span>
-                                <GlobeFill className="w-4 h-4 text-zinc-500 group-hover/item:text-electric transition-colors" />
+                        {/* Avatar */}
+                        <div className="absolute top-[25%] left-8 transform -translate-y-1/2">
+                            <div className="p-1.5 rounded-full bg-black/20 backdrop-blur-md border border-white/10 shadow-2xl">
+                                <div className="h-24 w-24 rounded-full border-2 border-white/5 overflow-hidden bg-zinc-900">
+                                   <img 
+                                        src="https://api.dicebear.com/9.x/avataaars/svg?seed=Felix" 
+                                        alt="Demo"
+                                        className="w-full h-full object-cover"
+                                    />
+                                </div>
+                                <div className="absolute bottom-2 right-2 w-6 h-6 bg-[#09090b] rounded-full flex items-center justify-center">
+                                    <div className="w-4 h-4 bg-green-500 rounded-full border-2 border-[#09090b]" />
+                                </div>
                             </div>
                         </div>
+
+                        {/* Top Right Badges */}
+                        <div className="absolute top-4 right-4 flex gap-2">
+                             <div className="w-8 h-8 rounded-full bg-black/40 backdrop-blur border border-white/10 flex items-center justify-center text-[10px] text-white/50">
+                                 🏆
+                             </div>
+                        </div>
+
+                        {/* Text Content */}
+                        <div className="mt-16 space-y-4">
+                            <div>
+                                <h2 className="text-3xl font-black text-white tracking-tight flex items-center gap-2 font-heading">
+                                    Felix
+                                    <span className="px-2 py-0.5 rounded-md bg-white/10 border border-white/5 text-[10px] font-mono text-white/80 tracking-widest uppercase backdrop-blur-sm">
+                                        LVL 99
+                                    </span>
+                                </h2>
+                                <p className="text-white/60 font-mono text-sm mt-1">
+                                    @felix_codes
+                                </p>
+                            </div>
+
+                            {/* Bio */}
+                            <div className="relative p-4 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-md text-sm text-zinc-300 leading-relaxed">
+                                <div className="absolute -top-3 left-4 px-2 py-0.5 bg-black/60 rounded text-[10px] text-zinc-500 uppercase font-bold tracking-wider backdrop-blur">
+                                    About
+                                </div>
+                                Building the future of digital identity. 🚀
+                            </div>
+
+                            {/* Socials Row */}
+                            <div className="flex gap-3 pt-2">
+                                <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400">
+                                    <ExternalLink className="w-5 h-5" />
+                                </div>
+                                 <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400">
+                                    <GlobeFill className="w-5 h-5" />
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </motion.div>
@@ -207,14 +254,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <footer className="py-12 text-center text-zinc-600 text-sm border-t border-white/5 bg-[#050505]">
-         <div className="flex items-center justify-center gap-6 mb-4">
-             <Link href="/legal/terms" className="hover:text-zinc-400 transition-colors">Terms</Link>
-             <Link href="/legal/privacy" className="hover:text-zinc-400 transition-colors">Privacy</Link>
-             <Link href="https://twitter.com/dscrdwtf" className="hover:text-zinc-400 transition-colors">Twitter</Link>
-         </div>
-         <p>© 2026 dscrd.wtf. Not affiliated with Discord Inc.</p>
-      </footer>
     </div>
   );
 }

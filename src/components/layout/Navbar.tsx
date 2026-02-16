@@ -2,10 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Zap } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { clsx } from 'clsx';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 
 const navLinks = [
   { label: 'Features', href: '/features' },
@@ -29,12 +30,15 @@ export function Navbar() {
       <div className="max-w-5xl mx-auto h-16 px-6 bg-[#09090b]/80 backdrop-blur-md border border-white/10 rounded-2xl flex items-center justify-between shadow-2xl shadow-black/50">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group">
-           <div className="w-8 h-8 rounded-lg bg-electric flex items-center justify-center text-white shadow-lg shadow-electric/20 group-hover:scale-105 transition-transform">
-             <Zap className="w-5 h-5" fill="currentColor" />
+           <div className="relative h-8 w-32 transition-transform group-hover:scale-105">
+             <Image 
+               src="/dscrd.wtf-logo-full.png" 
+               alt="dscrd.wtf" 
+               fill 
+               className="object-contain"
+               priority
+             />
            </div>
-           <span className="font-jua text-xl text-white tracking-wide group-hover:text-electric transition-colors">
-             dscrd<span className="text-zinc-600">.wtf</span>
-           </span>
         </Link>
 
         {/* Desktop Links */}

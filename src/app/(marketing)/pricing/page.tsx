@@ -5,7 +5,6 @@ import Link from 'next/link';
 export default function PricingPage() {
   return (
     <div className="min-h-screen bg-void text-white">
-      <Navbar />
       
       <main className="max-w-7xl mx-auto px-6 pt-32 pb-20">
         <div className="text-center mb-20">

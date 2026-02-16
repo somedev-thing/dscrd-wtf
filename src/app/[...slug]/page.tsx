@@ -65,91 +65,144 @@ export default async function PublicProfilePage({ params }: Props) {
   const User = mongoose.models.User || mongoose.model('User', new mongoose.Schema({ name: String, image: String }));
   const user = await User.findById(profile.userId);
 
+
   const themeColors = {
-    dark: 'text-white bg-zinc-950',
-    electric: 'text-white bg-slate-950',
-    void: 'text-white bg-black',
+    dark: 'bg-[#09090b]',
+    electric: 'bg-[#001229]',
+    void: 'bg-black',
+    custom: 'bg-[#09090b]' // Fallback for custom, overridden by inline styles
   };
 
   const bgClass = themeColors[profile.theme as keyof typeof themeColors] || themeColors.dark;
+  
+  // Custom Theme Styles
+  const customStyle = profile.theme === 'custom' && profile.customColors ? {
+      backgroundColor: profile.customColors.background || '#09090b', // Fallback
+      backgroundImage: `linear-gradient(to bottom right, ${profile.customColors.start}, ${profile.customColors.end})`
+  } : {};
+
+  // Accent color for glow
+  const accentColor = () => {
+      if (profile.theme === 'electric') return '#7928CA';
+      if (profile.theme === 'custom') return profile.customColors?.accent || '#7928CA';
+      return '#ffffff';
+  };
 
   return (
-    <div className={`min-h-screen ${bgClass} font-sans selection:bg-electric selection:text-white flex items-center justify-center p-4`}>
+    <div className={`min-h-screen font-sans selection:bg-electric selection:text-white flex items-center justify-center p-4 relative overflow-hidden ${bgClass}`} style={customStyle}>
        
-       <div className={`w-full max-w-sm rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 relative group ${
-         profile.theme === 'electric' ? 'bg-[#001229]' : 'bg-[#09090b]'
-       }`}>
-          
+       {/* Background ambient glow matching theme */}
+       <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-[-20%] left-[-20%] w-[50%] h-[50%] rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/0 blur-[120px] animate-pulse" style={{ backgroundColor: `${accentColor()}20` }} />
+          <div className="absolute bottom-[-20%] right-[-20%] w-[50%] h-[50%] rounded-full bg-gradient-to-tl from-indigo-500/20 to-purple-500/0 blur-[120px] animate-pulse" style={{ backgroundColor: `${accentColor()}20` }} />
+       </div>
+
+       <div className={`w-full max-w-sm rounded-[2.5rem] overflow-hidden shadow-2xl relative group bg-[#09090b]`}
+            style={{
+                boxShadow: `0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 100px -20px ${accentColor()}30`
+            }}
+       >
+          {/* Glass Overlay Texture */}
+          <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+
           {/* Top Info Button */}
-          <Link href="/" className="absolute top-4 right-4 z-20 w-8 h-8 flex items-center justify-center rounded-full bg-black/50 backdrop-blur text-white/50 hover:text-white transition-colors">
+          <Link href="/" className="absolute top-4 left-4 z-30 w-8 h-8 flex items-center justify-center rounded-full bg-black/40 backdrop-blur text-white/50 hover:text-white transition-colors border border-white/5 hover:border-white/20">
             <Zap className="w-4 h-4" />
           </Link>
 
           {/* Banner */}
-          <div className={`h-40 w-full relative overflow-hidden bg-gradient-to-r ${
-            profile.theme === 'electric' ? 'from-electric to-blue-600' : 'from-zinc-800 to-zinc-900'
-          }`}>
-             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-30" />
-             {/* If we had a banner image, valid here */}
+          <div className="h-48 w-full relative overflow-hidden group/banner">
+            {profile.banner ? (
+                   <img src={profile.banner} alt="Banner" className="w-full h-full object-cover transition-transform duration-700 group-hover/banner:scale-105" />
+               ) : (
+                   <div className="w-full h-full bg-zinc-800/50" style={{ backgroundColor: profile.bannerColor || '#27272a' }} />
+               )}
+             <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60" />
           </div>
 
-          {/* Avatar Base */}
-          <div className="relative px-6 pb-8">
-             <div className="absolute -top-12 left-6 w-24 h-24 rounded-full border-[6px] border-[#09090b] overflow-hidden bg-zinc-800 z-10">
-                {user?.image ? (
-                  <img src={user.image} alt={user.name} className="w-full h-full object-cover" />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-zinc-700 text-zinc-500">
-                    <Zap />
-                  </div>
-                )}
+          {/* Content Container */}
+          <div className="relative px-8 pb-10 -mt-12">
+             
+             {/* Avatar Area */}
+             <div className="relative mb-4">
+                 <div className="w-24 h-24 rounded-full border-[3px] border-[#09090b] bg-[#09090b] relative z-10 overflow-hidden shadow-2xl">
+                    {user?.image ? (
+                        <img src={user.image} alt={user.name} className="w-full h-full object-cover" />
+                    ) : (
+                         <div className="w-full h-full flex items-center justify-center bg-zinc-800 text-zinc-500 font-bold text-2xl">
+                            {(user?.name || handle)[0].toUpperCase()}
+                        </div>
+                    )}
+                 </div>
+                 {/* Online Status */}
+                 <div className="absolute bottom-1 right-[calc(100%-6rem)] z-20 w-6 h-6 bg-[#09090b] rounded-full flex items-center justify-center translate-x-1/2">
+                    <div className="w-4 h-4 bg-green-500 rounded-full border-2 border-[#09090b]" />
+                 </div>
              </div>
 
-             <div className="pt-14">
-                <h1 className="font-jua text-3xl text-white flex items-center gap-2">
-                  {user?.name || handle}
-                  {/* Verified Badge placeholder */}
-                  {/* <div className="w-5 h-5 bg-electric text-white rounded-full flex items-center justify-center text-[10px]"><Check /></div> */}
+             {/* Badges */}
+             <div className="absolute top-4 right-8 flex gap-2 z-20">
+                 {(profile.badges || []).map((badge: string, i: number) => (
+                     <div key={i} className="w-8 h-8 rounded-full bg-black/40 backdrop-blur border border-white/10 flex items-center justify-center text-[10px] text-white/50 shadow-lg" title={badge}>
+                         🏆
+                     </div>
+                 ))}
+             </div>
+
+             {/* User Info */}
+             <div className="space-y-1 mb-6">
+                <h1 className="font-jua text-3xl text-white flex items-center gap-2 tracking-tight">
+                  {profile.displayName || user?.name || handle}
+                  <span className="px-2 py-0.5 rounded-md bg-white/10 border border-white/5 text-[10px] font-mono text-white/80 tracking-widest uppercase backdrop-blur-sm">
+                      LVL 1
+                  </span>
                 </h1>
-                <p className="font-mono text-electric text-sm mb-4">@{handle}</p>
-
-                {profile.bio && (
-                  <p className="text-zinc-400 font-heading text-sm leading-relaxed mb-6">
-                    {profile.bio}
-                  </p>
-                )}
+                <p className="font-mono text-electric text-sm tracking-wide">@{handle}</p>
              </div>
 
-             {/* Links/Stats - Placeholder for now until we have Links model */}
-             <div className="space-y-3">
-                <div className="p-3 rounded-xl bg-white/5 border border-white/5 hover:border-white/20 transition-colors flex items-center justify-between group cursor-pointer">
-                   <div className="flex items-center gap-3">
-                     <div className="w-10 h-10 rounded-lg bg-electric/10 flex items-center justify-center text-electric">
-                       <Hexagon className="w-5 h-5" />
-                     </div>
-                     <span className="font-heading font-medium text-white">My Server</span>
-                   </div>
-                   <ArrowUpRight className="w-4 h-4 text-zinc-600 group-hover:text-white transition-colors" />
+             {/* Bio */}
+             <div className="relative p-4 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-md text-sm text-zinc-300 leading-relaxed mb-8 group hover:bg-white/10 transition-colors">
+                <div className="absolute -top-3 left-4 px-2 py-0.5 bg-black/60 rounded text-[10px] text-zinc-500 uppercase font-bold tracking-wider backdrop-blur border border-white/5">
+                    About
                 </div>
-                 <div className="p-3 rounded-xl bg-white/5 border border-white/5 hover:border-white/20 transition-colors flex items-center justify-between group cursor-pointer">
-                   <div className="flex items-center gap-3">
-                     <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-500">
-                       <Globe className="w-5 h-5" />
-                     </div>
-                     <span className="font-heading font-medium text-white">Website</span>
-                   </div>
-                   <ArrowUpRight className="w-4 h-4 text-zinc-600 group-hover:text-white transition-colors" />
-                </div>
+                {profile.bio || "No bio yet."}
              </div>
 
-             <footer className="mt-8 text-center border-t border-white/5 pt-4">
-                <Link href="/" className="font-jua text-xs text-zinc-600 hover:text-electric transition-colors uppercase tracking-widest">
+             {/* Links */}
+             {profile.socials && profile.socials.length > 0 ? (
+                 <div className="flex flex-wrap gap-3">
+                    {profile.socials.map((link: any, i: number) => {
+                         // Simple Icon Mapping locally or verify imports
+                         // For now using Generic
+                         return (
+                            <a 
+                                key={i}
+                                href={link.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-white hover:bg-white/20 hover:border-white/20 transition-all shadow-lg text-[10px]"
+                                title={link.platform}
+                            >
+                                {/* We can't easily import dynamic icons here without the full list mapping, so using platform initial or generic globe */}
+                                <Globe className="w-5 h-5" />
+                            </a>
+                         )
+                    })}
+                 </div>
+             ) : (
+                <div className="text-center py-4 rounded-xl border border-dashed border-white/5 text-zinc-600 text-xs">
+                    No socials linked
+                </div>
+             )}
+
+             <footer className="mt-12 text-center">
+                <Link href="/" className="font-jua text-xs text-zinc-700 hover:text-electric transition-colors uppercase tracking-[0.2em] hover:tracking-[0.3em] duration-300">
                   dscrd.wtf
                 </Link>
              </footer>
           </div>
        </div>
-
     </div>
   );
 }

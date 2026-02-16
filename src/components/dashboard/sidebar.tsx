@@ -4,11 +4,16 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { 
   DashboardFill, 
+  DashboardFilled,
   IdCardFill, 
+  IdCardFilled,
   ServerFill, 
+  ServerFilled,
   DirectionArrrowRightFill, 
   CreditCardFill, 
+  CreditCardFilled,
   SettingsFill,
+  SettingsFilled,
   LogoutFill,
   Zap,
   ThunderstormFill
@@ -17,12 +22,12 @@ import { clsx } from 'clsx';
 import { signOut } from 'next-auth/react';
 
 const sidebarLinks = [
-  { label: 'Overview', href: '/dashboard', icon: DashboardFill },
-  { label: 'Identity', href: '/dashboard/identity', icon: IdCardFill },
-  { label: 'Servers', href: '/dashboard/servers', icon: ServerFill },
-  { label: 'Redirects', href: '/dashboard/redirects', icon: DirectionArrrowRightFill },
-  { label: 'Billing', href: '/dashboard/billing', icon: CreditCardFill },
-  { label: 'Account', href: '/dashboard/account', icon: SettingsFill },
+  { label: 'Overview', href: '/dashboard', icon: DashboardFill, activeIcon: DashboardFilled },
+  { label: 'Identity', href: '/dashboard/identity', icon: IdCardFill, activeIcon: IdCardFilled },
+  { label: 'Servers', href: '/dashboard/servers', icon: ServerFill, activeIcon: ServerFilled },
+  { label: 'Redirects', href: '/dashboard/redirects', icon: DirectionArrrowRightFill, activeIcon: DirectionArrrowRightFill }, // No filled for this one yet
+  { label: 'Billing', href: '/dashboard/billing', icon: CreditCardFill, activeIcon: CreditCardFilled },
+  { label: 'Account', href: '/dashboard/account', icon: SettingsFill, activeIcon: SettingsFilled },
 ];
 
 export function Sidebar() {
@@ -50,7 +55,7 @@ export function Sidebar() {
         </div>
         {sidebarLinks.map((link) => {
           const isActive = pathname === link.href || (link.href !== '/dashboard' && pathname.startsWith(link.href));
-          const Icon = link.icon;
+          const Icon = isActive && link.activeIcon ? link.activeIcon : link.icon;
 
           return (
             <Link
@@ -59,13 +64,10 @@ export function Sidebar() {
               className={clsx(
                 "flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-heading font-medium text-sm group relative overflow-hidden",
                 isActive 
-                  ? "bg-electric text-white shadow-[0_0_15px_-3px_rgba(121,40,202,0.4)]" 
+                  ? "bg-white/10 text-white" 
                   : "text-zinc-400 hover:text-white hover:bg-white/5"
               )}
             >
-              {isActive && (
-                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-white rounded-r-full" />
-              )}
               <Icon className={clsx("w-5 h-5 transition-colors", isActive ? "text-white" : "text-zinc-500 group-hover:text-white")} />
               {link.label}
             </Link>
