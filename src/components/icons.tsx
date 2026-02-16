@@ -1,0 +1,65 @@
+
+import {
+  IconLayoutDashboard,
+  IconId,
+  IconServer,
+  IconArrowRightCircle,
+  IconArrowRight,
+  IconCreditCard,
+  IconSettings,
+  IconLogout,
+  IconBolt,
+  IconRocket,
+  IconUsers,
+  IconEye,
+  IconWorld,
+  IconEdit,
+  IconPhoto,
+  IconDeviceFloppy,
+  IconTrash,
+  IconPlus,
+  IconLink,
+  IconRefresh,
+  IconClick,
+  IconCheck,
+  IconCircleCheck,
+  IconX,
+  IconMail,
+  IconShieldCheck,
+  IconCode,
+  IconExternalLink,
+  IconRobot
+} from '@tabler/icons-react';
+
+// Mappings to match usage in codebase
+export const DashboardFill = IconLayoutDashboard;
+export const IdCardFill = IconId;
+export const ServerFill = IconServer;
+export const DirectionArrrowRightFill = IconArrowRightCircle;
+export const ArrowRightFill = IconArrowRight;
+export const CreditCardFill = IconCreditCard;
+export const SettingsFill = IconSettings;
+export const LogoutFill = IconLogout;
+export const Zap = IconBolt;
+export const ThunderstormFill = IconBolt; // Fallback
+export const RocketFill = IconRocket;
+export const UsersGroupTwoFill = IconUsers;
+export const EyeFill = IconEye;
+export const GlobeFill = IconWorld;
+export const EditFill = IconEdit;
+export const ImageFill = IconPhoto;
+export const SaveFill = IconDeviceFloppy;
+export const TrashFill = IconTrash;
+export const PlusFill = IconPlus;
+export const CursorClickFill = IconClick;
+export const LinkFill = IconLink;
+export const RefreshCwFill = IconRefresh;
+export const ShieldCheckFill = IconShieldCheck;
+export const CodeFill = IconCode;
+export const ExternalLink = IconExternalLink;
+export const RobotFill = IconRobot;
+export const CloseCircleFill = IconX; // Re-export as CloseCircleFill if needed
+export const CheckCircleFill = IconCircleCheck; // Prefer CircleCheck
+export const MailFill = IconMail;
+// Fallback for any others
+export const LightningFill = IconBolt;

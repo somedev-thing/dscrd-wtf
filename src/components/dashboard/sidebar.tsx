@@ -1,128 +1,88 @@
-"use client"
+'use client';
 
-import * as React from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Separator } from "@/components/ui/separator"
-import { Session } from "next-auth"
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { 
-  CreditCard, 
-  Globe, 
-  Home, 
-  LayoutGrid, 
-  LogOut, 
-  Menu, 
-  Settings, 
-  ShieldCheck, 
-  User, 
+  DashboardFill, 
+  IdCardFill, 
+  ServerFill, 
+  DirectionArrrowRightFill, 
+  CreditCardFill, 
+  SettingsFill,
+  LogoutFill,
   Zap,
-  ChevronRight
-} from "lucide-react"
-import { signOut } from "next-auth/react"
+  ThunderstormFill
+} from '@/components/icons';
+import { clsx } from 'clsx';
+import { signOut } from 'next-auth/react';
 
-interface DashboardSidebarProps {
-  session: Session | null
-  mobileOpen?: boolean
-  setMobileOpen?: (open: boolean) => void
-}
+const sidebarLinks = [
+  { label: 'Overview', href: '/dashboard', icon: DashboardFill },
+  { label: 'Identity', href: '/dashboard/identity', icon: IdCardFill },
+  { label: 'Servers', href: '/dashboard/servers', icon: ServerFill },
+  { label: 'Redirects', href: '/dashboard/redirects', icon: DirectionArrrowRightFill },
+  { label: 'Billing', href: '/dashboard/billing', icon: CreditCardFill },
+  { label: 'Account', href: '/dashboard/account', icon: SettingsFill },
+];
 
-const navItems = [
-  { label: 'Overview', icon: LayoutGrid, href: '/dashboard' },
-  { label: 'Identity', icon: User, href: '/dashboard/identity' },
-  { label: 'Redirects', icon: Globe, href: '/dashboard/redirects' },
-  { label: 'Servers', icon: Home, href: '/dashboard/servers' },
-  { label: 'Billing', icon: CreditCard, href: '/dashboard/billing' },
-  { label: 'Settings', icon: Settings, href: '/dashboard/settings' },
-]
-
-export function DashboardSidebar({ session, mobileOpen, setMobileOpen }: DashboardSidebarProps) {
-  const pathname = usePathname()
-  const [isCollapsed, setIsCollapsed] = React.useState(false)
-
-  const SidebarContent = () => (
-    <div className="flex h-full flex-col gap-4">
-      <div className={cn("flex h-14 items-center border-b px-4", isCollapsed ? "justify-center" : "gap-2")}>
-        <div className="flex items-center gap-2 font-semibold">
-           <div className="h-8 w-8 rounded-lg bg-electric flex items-center justify-center text-white">
-             <Zap className="h-5 w-5 fill-current" />
-           </div>
-           {!isCollapsed && <span className="font-jua text-xl">dscrd.wtf</span>}
-        </div>
-      </div>
-      
-      <ScrollArea className="flex-1 px-2">
-        <div className="flex flex-col gap-1 py-2">
-          {navItems.map((item) => {
-            const isActive = pathname === item.href
-            return (
-              <Button
-                key={item.href}
-                variant={isActive ? "secondary" : "ghost"}
-                size={isCollapsed ? "icon" : "default"}
-                className={cn(
-                  "justify-start",
-                  isActive && "bg-secondary",
-                  isCollapsed && "justify-center"
-                )}
-                asChild
-              >
-                <Link href={item.href}>
-                  <item.icon className={cn("h-4 w-4", !isCollapsed && "mr-2")} />
-                  {!isCollapsed && <span>{item.label}</span>}
-                </Link>
-              </Button>
-            )
-          })}
-        </div>
-      </ScrollArea>
-
-      <div className="mt-auto border-t p-4">
-          <div className={cn("flex items-center gap-3", isCollapsed && "justify-center")}>
-             <Avatar className="h-9 w-9 border">
-                <AvatarImage src={session?.user?.image || undefined} alt={session?.user?.name || "User"} />
-                <AvatarFallback>{session?.user?.name?.[0] || "U"}</AvatarFallback>
-             </Avatar>
-             {!isCollapsed && (
-                <div className="flex flex-col text-sm">
-                    <span className="font-semibold truncate max-w-[120px]">{session?.user?.name}</span>
-                    <span className="text-xs text-muted-foreground truncate max-w-[120px]">
-                        {(session?.user as any)?.tier === 'verified' ? 'Pro Plan' : 'Free Plan'}
-                    </span>
-                </div>
-             )}
-             {!isCollapsed && (
-                 <Button variant="ghost" size="icon" className="ml-auto" onClick={() => signOut()}>
-                     <LogOut className="h-4 w-4 text-muted-foreground hover:text-destructive"/>
-                 </Button>
-             )}
-          </div>
-      </div>
-    </div>
-  )
+export function Sidebar() {
+  const pathname = usePathname();
 
   return (
-    <>
-      {/* Desktop Sidebar */}
-      <div className="hidden border-r bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:flex md:flex-col md:h-screen md:sticky md:top-0 w-64 data-[collapsed=true]:w-16 transition-all duration-300" data-collapsed={isCollapsed}>
-         <SidebarContent />
+    <aside className="w-64 h-screen fixed left-0 top-0 bg-[#09090b]/90 backdrop-blur-xl border-r border-white/10 flex flex-col z-40 hidden md:flex transition-all">
+      
+      {/* Brand */}
+      <div className="h-16 flex items-center px-6 border-b border-white/5">
+        <Link href="/" className="flex items-center gap-3 group">
+            <div className="w-8 h-8 rounded-lg bg-electric flex items-center justify-center text-white shadow-lg shadow-electric/20 group-hover:scale-105 transition-transform">
+                <ThunderstormFill className="w-5 h-5" />
+            </div>
+            <span className="font-jua text-xl text-white tracking-wide group-hover:text-electric transition-colors">
+                dscrd<span className="text-zinc-600">.wtf</span>
+            </span>
+        </Link>
       </div>
 
-      {/* Mobile Sidebar */}
-      <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-        <SheetContent side="left" className="p-0 w-72">
-           <SidebarContent />
-        </SheetContent>
-      </Sheet>
-    </>
-  )
+      {/* Navigation */}
+      <nav className="flex-1 p-4 space-y-1 overflow-y-auto custom-scrollbar">
+        <div className="px-4 py-2 text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">
+            Menu
+        </div>
+        {sidebarLinks.map((link) => {
+          const isActive = pathname === link.href || (link.href !== '/dashboard' && pathname.startsWith(link.href));
+          const Icon = link.icon;
+
+          return (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={clsx(
+                "flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-heading font-medium text-sm group relative overflow-hidden",
+                isActive 
+                  ? "bg-electric text-white shadow-[0_0_15px_-3px_rgba(121,40,202,0.4)]" 
+                  : "text-zinc-400 hover:text-white hover:bg-white/5"
+              )}
+            >
+              {isActive && (
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-white rounded-r-full" />
+              )}
+              <Icon className={clsx("w-5 h-5 transition-colors", isActive ? "text-white" : "text-zinc-500 group-hover:text-white")} />
+              {link.label}
+            </Link>
+          );
+        })}
+      </nav>
+
+      {/* User / Footer */}
+      <div className="p-4 border-t border-white/5">
+         <button 
+           onClick={() => signOut({ callbackUrl: '/' })}
+           className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-400 hover:text-red-400 hover:bg-red-500/10 transition-all font-heading font-medium text-sm group"
+         >
+            <LogoutFill className="w-5 h-5 group-hover:text-red-400 transition-colors" />
+            Sign Out
+         </button>
+      </div>
+    </aside>
+  );
 }

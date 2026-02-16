@@ -8,9 +8,10 @@ import { clsx } from 'clsx';
 import { useSession } from 'next-auth/react';
 
 const navLinks = [
-  { label: 'Features', href: '/#features' },
-  { label: 'Pricing', href: '/#pricing' },
-  { label: 'Docs', href: '/docs' },
+  { label: 'Features', href: '/features' },
+  { label: 'Pricing', href: '/pricing' },
+  { label: 'Showcase', href: '/showcase' },
+  { label: 'Open Source', href: '/open-source' },
 ];
 
 export function Navbar() {

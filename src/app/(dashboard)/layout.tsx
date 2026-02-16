@@ -1,15 +1,7 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { DashboardShell } from "@/components/dashboard/shell";
+import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { ThemeProvider } from "@/components/theme-provider";
 
-export default async function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const session = await getServerSession(authOptions);
-
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider
             attribute="class"
@@ -17,9 +9,9 @@ export default async function DashboardLayout({
             enableSystem
             disableTransitionOnChange
     >
-        <DashboardShell session={session}>
+        <DashboardLayout>
             {children}
-        </DashboardShell>
+        </DashboardLayout>
     </ThemeProvider>
   );
 }

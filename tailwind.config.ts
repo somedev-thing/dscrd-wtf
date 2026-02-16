@@ -57,10 +57,10 @@ const config: Config = {
           foreground: "hsl(var(--card-foreground))",
         },
         electric: {
-          DEFAULT: "#0072ff",
-          hover: "#00c6ff",
+          DEFAULT: "#7928CA", // Electric Purple
+          hover: "#9e5cf7",
         },
-        void: "#09090b",
+        void: "#050505",
       },
       borderRadius: {
         lg: "var(--radius)",

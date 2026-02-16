@@ -4,43 +4,60 @@
 
 @layer base {
   :root {
-    --background: 240 10% 3.9%;
+    /* Deep Space Theme */
+    --background: 240 10% 3.9%; /* Deep almost black */
     --foreground: 0 0% 98%;
 
-    --card: 240 10% 4.5%;
+    --card: 240 10% 3.9%; /* Same as background for blending, use opacity for glass */
     --card-foreground: 0 0% 98%;
- 
+
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
- 
-    --primary: 217 100% 50%; /* Electric Blue #0072ff */
+
+    --primary: 250 100% 65%; /* Neon / Electric Purple */
     --primary-foreground: 0 0% 100%;
- 
+
     --secondary: 240 4% 16%;
     --secondary-foreground: 0 0% 98%;
- 
+
     --muted: 240 4% 16%;
     --muted-foreground: 240 5% 64.9%;
- 
-    --accent: 240 4% 16%;
-    --accent-foreground: 0 0% 98%;
- 
+
+    --accent: 250 100% 65%;
+    --accent-foreground: 0 0% 100%;
+
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
- 
+
     --border: 240 4% 16%;
     --input: 240 4% 16%;
-    --ring: 240 4.9% 83.9%;
- 
+    --ring: 250 100% 65%; /* Focus rings match primary */
+
     --radius: 0.75rem;
+
+    /* Glassmorphism Utilities */
+    --glass-border: 240 4% 16%;
+    --glass-bg: 240 10% 3.9% / 0.6;
   }
 }
- 
+
 @layer base {
   * {
     @apply border-border;
   }
   body {
     @apply bg-background text-foreground;
+    background-image:
+      radial-gradient(
+        circle at 50% 0%,
+        rgba(120, 119, 198, 0.1) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 100% 0%,
+        rgba(120, 119, 198, 0.05) 0%,
+        transparent 50%
+      );
+    background-attachment: fixed;
   }
 }
