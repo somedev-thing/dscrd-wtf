@@ -30,15 +30,18 @@ export function Navbar() {
       <div className="max-w-5xl mx-auto h-16 px-6 bg-[#09090b]/80 backdrop-blur-md border border-white/10 rounded-2xl flex items-center justify-between shadow-2xl shadow-black/50">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group">
-           <div className="relative h-8 w-32 transition-transform group-hover:scale-105">
+           <div className="relative w-8 h-8 transition-transform group-hover:scale-105">
              <Image 
-               src="/dscrd.wtf-logo-full.png" 
-               alt="dscrd.wtf" 
+               src="/dscrd-logo-icon.png" 
+               alt="dscrd" 
                fill 
                className="object-contain"
                priority
              />
            </div>
+           <span className="font-jua text-xl text-white tracking-wide group-hover:text-electric transition-colors">
+             dscrd<span className="text-zinc-600">.wtf</span>
+           </span>
         </Link>
 
         {/* Desktop Links */}

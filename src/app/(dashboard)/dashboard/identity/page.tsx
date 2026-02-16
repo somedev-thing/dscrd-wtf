@@ -20,8 +20,10 @@ import {
     RedditFill,
     ImageFill,
     MailFill,
-    CheckCircleFill
+    CheckCircleFill,
+    ExternalLink
 } from '@/components/icons';
+import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -31,7 +33,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Loader } from "@/components/ui/loader";
-import { Skeleton } from "@/components/ui/skeleton";
 import { motion, AnimatePresence } from 'framer-motion';
 
 const SOCIAL_PROVIDERS = [
@@ -106,11 +107,8 @@ export default function IdentityPage() {
     fetchProfile();
   }, []);
 
-  const handleAddLink = () => {
-    if (!newLinkUrl) return;
-    setLinks([...links, { platform: newLinkProvider, url: newLinkUrl }]);
-    setNewLinkUrl('');
-  };
+
+
 
   const handleRemoveLink = (index: number) => {
     setLinks(links.filter((_, i) => i !== index));
@@ -177,6 +175,11 @@ export default function IdentityPage() {
             <p className="text-zinc-400">Manage your digital profile presence.</p>
         </div>
         <div className="flex items-center gap-3">
+            <Link href={`/@${profile?.handle || ''}`} target="_blank">
+                <Button variant="outline" size="sm" className="bg-white/5 border-white/10 hover:bg-white/10 text-white gap-2 transition-all">
+                    <ExternalLink className="w-4 h-4" /> View Profile
+                </Button>
+            </Link>
             <Button variant="outline" size="sm" onClick={fetchProfile} className="bg-white/5 border-white/10 hover:bg-white/10 text-white gap-2 transition-all">
                 <RefreshCwFill className="w-4 h-4" /> Sync Discord
             </Button>
@@ -258,17 +261,16 @@ export default function IdentityPage() {
 
                         {/* Text Content */}
                         <div className="mt-16 space-y-4 relative z-10 w-full">
-                            <div>
-                                <h2 className="text-3xl font-black text-white tracking-tight flex items-center gap-2 font-heading truncate">
-                                    {profile?.displayName || session?.user?.name || 'User'}
-                                    <span className="px-2 py-0.5 rounded-md bg-white/10 border border-white/5 text-[10px] font-mono text-white/80 tracking-widest uppercase backdrop-blur-sm shrink-0">
-                                        LVL 1
-                                    </span>
-                                </h2>
-                                <p className="text-white/60 font-mono text-sm mt-1 truncate">
-                                    @{profile?.handle || 'username'}
-                                </p>
-                            </div>
+             {/* User Info */}
+             <div className="space-y-1 mb-6">
+                <h1 className="font-jua text-2xl sm:text-3xl text-white flex flex-wrap items-center gap-2 tracking-tight leading-none">
+                  <span className="truncate max-w-[200px]">{profile?.displayName || session?.user?.name || 'User'}</span>
+                  <span className="px-2 py-0.5 rounded-md bg-white/10 border border-white/5 text-[10px] font-mono text-white/80 tracking-widest uppercase backdrop-blur-sm whitespace-nowrap">
+                      LVL 1
+                  </span>
+                </h1>
+                <p className="font-mono text-electric text-sm tracking-wide break-all">@{profile?.handle || 'username'}</p>
+             </div>
 
                             {/* Bio */}
                             <div className="relative p-4 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-md text-sm text-zinc-300 leading-relaxed max-h-32 overflow-y-auto custom-scrollbar group">

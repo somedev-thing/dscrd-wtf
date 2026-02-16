@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import dbConnect from '@/lib/db';
-import Profile from '@/models/Profile';
+import Profile from '@/lib/models/Profile';
 import Account from '@/lib/models/Account';
 
 async function getDiscordData(userId: string) {

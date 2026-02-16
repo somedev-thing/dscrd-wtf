@@ -5,10 +5,10 @@ import {
     EyeFill, 
     CursorClickFill, 
     RocketFill,
-    SettingsFill,
-    ThunderstormFill
+    SettingsFill
 } from '@/components/icons';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 export default function DashboardOverview() {
   return (
@@ -18,8 +18,10 @@ export default function DashboardOverview() {
             <h1 className="text-3xl font-heading font-bold text-white mb-2">Overview</h1>
             <p className="text-zinc-400">Welcome back, Commander.</p>
          </div>
-         <button className="px-4 py-2 bg-electric text-white rounded-lg font-bold text-sm shadow-lg shadow-electric/20 hover:bg-electric-hover transition-colors flex items-center gap-2">
-            <ThunderstormFill className="w-4 h-4" />
+         <button className="px-4 py-2 bg-electric text-white rounded-lg font-bold text-sm shadow-lg shadow-electric/20 hover:bg-electric-hover transition-colors flex items-center gap-2 group">
+            <div className="relative w-4 h-4 transition-transform group-hover:scale-110">
+                 <Image src="/dscrd-logo-icon.png" alt="Icon" fill className="object-contain" />
+            </div>
             Share Profile
          </button>
       </div>

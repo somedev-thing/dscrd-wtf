@@ -41,7 +41,9 @@ import {
   IconStack2Filled,
   IconCreditCardFilled,
   IconSettingsFilled,
-  IconUserFilled
+  IconUserFilled,
+  IconHexagon,
+  IconArrowUpRight
 } from '@tabler/icons-react';
 
 // Mappings to match usage in codebase
@@ -92,4 +94,8 @@ export const SettingsFilled = IconSettingsFilled;
 export const IdCardFilled = IconUserFilled;
 
 // Fallback for any others
+// Fallback for any others
 export const LightningFill = IconBolt;
+export const Hexagon = IconHexagon;
+export const ArrowUpRight = IconArrowUpRight;
+export const Check = IconCheck;

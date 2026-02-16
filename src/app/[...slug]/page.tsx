@@ -1,9 +1,10 @@
 import { notFound } from 'next/navigation';
 import dbConnect from '@/lib/db';
-import Profile from '@/models/Profile';
+import Profile from '@/lib/models/Profile';
 import { Metadata } from 'next';
-import { ArrowUpRight, Zap, Hexagon, Globe } from 'lucide-react';
+import { GlobeFill, Hexagon, ArrowUpRight, Zap, Check } from '@/components/icons';
 import Link from 'next/link';
+import Image from 'next/image';
 
 // Force dynamic since we're using params and DB
 export const dynamic = 'force-dynamic';
@@ -107,8 +108,10 @@ export default async function PublicProfilePage({ params }: Props) {
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
 
           {/* Top Info Button */}
-          <Link href="/" className="absolute top-4 left-4 z-30 w-8 h-8 flex items-center justify-center rounded-full bg-black/40 backdrop-blur text-white/50 hover:text-white transition-colors border border-white/5 hover:border-white/20">
-            <Zap className="w-4 h-4" />
+          <Link href="/" className="absolute top-4 left-4 z-30 w-8 h-8 flex items-center justify-center rounded-full bg-black/40 backdrop-blur text-white/50 hover:text-white transition-colors border border-white/5 hover:border-white/20 group">
+             <div className="relative w-4 h-4 transition-transform group-hover:scale-110">
+                 <Image src="/dscrd-logo-icon.png" alt="Home" fill className="object-contain" />
+            </div>
           </Link>
 
           {/* Banner */}
@@ -152,17 +155,17 @@ export default async function PublicProfilePage({ params }: Props) {
 
              {/* User Info */}
              <div className="space-y-1 mb-6">
-                <h1 className="font-jua text-3xl text-white flex items-center gap-2 tracking-tight">
-                  {profile.displayName || user?.name || handle}
-                  <span className="px-2 py-0.5 rounded-md bg-white/10 border border-white/5 text-[10px] font-mono text-white/80 tracking-widest uppercase backdrop-blur-sm">
+                <h1 className="font-jua text-2xl sm:text-3xl text-white flex flex-wrap items-center gap-2 tracking-tight leading-none">
+                  <span className="truncate max-w-[200px]">{profile.displayName || user?.name || handle}</span>
+                  <span className="px-2 py-0.5 rounded-md bg-white/10 border border-white/5 text-[10px] font-mono text-white/80 tracking-widest uppercase backdrop-blur-sm whitespace-nowrap">
                       LVL 1
                   </span>
                 </h1>
-                <p className="font-mono text-electric text-sm tracking-wide">@{handle}</p>
+                <p className="font-mono text-electric text-sm tracking-wide break-all">@{handle}</p>
              </div>
 
              {/* Bio */}
-             <div className="relative p-4 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-md text-sm text-zinc-300 leading-relaxed mb-8 group hover:bg-white/10 transition-colors">
+             <div className="relative p-4 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-md text-sm text-zinc-300 leading-relaxed mb-6 group hover:bg-white/10 transition-colors">
                 <div className="absolute -top-3 left-4 px-2 py-0.5 bg-black/60 rounded text-[10px] text-zinc-500 uppercase font-bold tracking-wider backdrop-blur border border-white/5">
                     About
                 </div>
@@ -185,7 +188,7 @@ export default async function PublicProfilePage({ params }: Props) {
                                 title={link.platform}
                             >
                                 {/* We can't easily import dynamic icons here without the full list mapping, so using platform initial or generic globe */}
-                                <Globe className="w-5 h-5" />
+                                <GlobeFill className="w-5 h-5" />
                             </a>
                          )
                     })}

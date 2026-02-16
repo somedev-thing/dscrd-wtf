@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { AlertTriangle, Home, Zap } from "lucide-react";
+import { AlertTriangle, Home } from "lucide-react";
+import Image from "next/image";
 
 export default function NotFound() {
   return (
@@ -11,8 +12,10 @@ export default function NotFound() {
         </div>
 
       <div className="max-w-lg relative z-10">
-        <div className="w-24 h-24 bg-white/5 rounded-3xl flex items-center justify-center mx-auto mb-8 border border-white/10 rotate-12 shadow-2xl shadow-electric/20 backdrop-blur-md">
-          <Zap className="w-12 h-12 text-electric" fill="currentColor" />
+        <div className="w-24 h-24 bg-white/5 rounded-3xl flex items-center justify-center mx-auto mb-8 border border-white/10 rotate-12 shadow-2xl shadow-electric/20 backdrop-blur-md group">
+          <div className="relative w-12 h-12 transition-transform group-hover:scale-110">
+              <Image src="/dscrd-logo-icon.png" alt="404" fill className="object-contain" />
+          </div>
         </div>
         
         <h1 className="font-jua text-8xl text-white mb-2 tracking-tighter">404</h1>

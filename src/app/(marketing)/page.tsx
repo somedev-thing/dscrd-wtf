@@ -133,7 +133,7 @@ export default function LandingPage() {
                         {/* Text Content */}
                         <div className="mt-16 space-y-4">
                             <div>
-                                <h2 className="text-3xl font-black text-white tracking-tight flex items-center gap-2 font-heading">
+                                <h2 className="text-3xl font-black text-white tracking-tight flex flex-wrap items-center gap-2 font-heading leading-none">
                                     Felix
                                     <span className="px-2 py-0.5 rounded-md bg-white/10 border border-white/5 text-[10px] font-mono text-white/80 tracking-widest uppercase backdrop-blur-sm">
                                         LVL 99
@@ -146,7 +146,7 @@ export default function LandingPage() {
 
                             {/* Bio */}
                             <div className="relative p-4 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-md text-sm text-zinc-300 leading-relaxed">
-                                <div className="absolute -top-3 left-4 px-2 py-0.5 bg-black/60 rounded text-[10px] text-zinc-500 uppercase font-bold tracking-wider backdrop-blur">
+                                <div className="absolute -top-3 left-4 px-2 py-0.5 bg-black/60 rounded text-[10px] text-zinc-500 uppercase font-bold tracking-wider backdrop-blur border border-white/5">
                                     About
                                 </div>
                                 Building the future of digital identity. 🚀
